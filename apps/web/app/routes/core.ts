@@ -253,8 +253,19 @@ export const coreRoutes: RouteConfigEntry[] = [
       ]),
 
       layout("./(all)/[workspaceSlug]/(modules)/layout.tsx", [
-        route(":workspaceSlug/wiki", "./(all)/[workspaceSlug]/(modules)/wiki/page.tsx"),
-        route(":workspaceSlug/ia", "./(all)/[workspaceSlug]/(modules)/ia/page.tsx"),
+        layout("./(all)/[workspaceSlug]/(modules)/wiki/layout.tsx", [
+          route(":workspaceSlug/wiki", "./(all)/[workspaceSlug]/(modules)/wiki/page.tsx"),
+          route(":workspaceSlug/wiki/sources", "./(all)/[workspaceSlug]/(modules)/wiki/sources/page.tsx"),
+        ]),
+        layout("./(all)/[workspaceSlug]/(modules)/ia/layout.tsx", [
+          route(":workspaceSlug/ia", "./(all)/[workspaceSlug]/(modules)/ia/page.tsx"),
+          route(":workspaceSlug/ia/threads", "./(all)/[workspaceSlug]/(modules)/ia/threads/page.tsx"),
+          route(":workspaceSlug/ia/agents", "./(all)/[workspaceSlug]/(modules)/ia/agents/page.tsx"),
+          route(":workspaceSlug/ia/runs", "./(all)/[workspaceSlug]/(modules)/ia/runs/page.tsx"),
+          route(":workspaceSlug/ia/review", "./(all)/[workspaceSlug]/(modules)/ia/review/page.tsx"),
+          route(":workspaceSlug/ia/memory", "./(all)/[workspaceSlug]/(modules)/ia/memory/page.tsx"),
+          route(":workspaceSlug/ia/usage", "./(all)/[workspaceSlug]/(modules)/ia/usage/page.tsx"),
+        ]),
       ]),
 
       // ====================================================================

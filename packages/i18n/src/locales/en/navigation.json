@@ -41,5 +41,26 @@
       "wiki": "Pages and Sources for the whole workspace will live here.",
       "ia": "Threads, Agents, Runs and Review will live here."
     }
+  },
+  "module_sidebar": {
+    "wiki": {
+      "new_page": "New page",
+      "pages": "Pages",
+      "collections": "Collections",
+      "sources": "Sources",
+      "agent_authored": "Agent-authored",
+      "agent_authored_on": "Showing agent-authored pages only",
+      "no_collections": "No collections yet",
+      "no_agent_authored": "No agent-authored pages yet"
+    },
+    "ia": {
+      "new_thread": "New thread",
+      "threads": "Threads",
+      "agents": "Agents",
+      "runs": "Runs",
+      "review": "Review",
+      "memory": "Memory & Preferences",
+      "usage": "Usage"
+    }
   }
 }

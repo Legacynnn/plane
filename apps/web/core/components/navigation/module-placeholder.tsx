@@ -11,12 +11,13 @@ import { MODULE_ICONS } from "./module-icons";
 
 type Props = {
   module: "wiki" | "ia";
+  section?: string;
 };
 
-export function ModulePlaceholder({ module }: Props) {
+export function ModulePlaceholder({ module, section }: Props) {
   const { t } = useTranslation();
   const Icon = MODULE_ICONS[module];
-  const title = t(`app_rail.${module}`);
+  const title = section ? t(`module_sidebar.${module}.${section}`) : t(`app_rail.${module}`);
 
   return (
     <>

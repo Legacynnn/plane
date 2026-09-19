@@ -9,9 +9,7 @@ import { Outlet } from "react-router";
 export default function ModuleLayout() {
   return (
     <div className="relative flex size-full overflow-hidden rounded-lg border border-subtle">
-      <main className="relative flex size-full flex-col overflow-hidden bg-surface-1">
-        <Outlet />
-      </main>
+      <Outlet />
     </div>
   );
 }

@@ -9,7 +9,9 @@
 - Module names Work, Wiki and IA stay untranslated in every locale. Rail labels may hyphenate onto a second line, never truncate.
 - A module without screens yet shows its icon, name and one line saying what will live there, in CONTEXT.md nouns.
 - The inbox lives in the top bar and collects notifications from all three modules.
-- Each module owns its sidebar: Work keeps today's; Wiki shows collections, nested pages and Sources; IA shows Chats, Agents, Runs, Review, Memory & Preferences, Usage.
+- Each module owns its sidebar: Work keeps today's; Wiki shows Pages, Sources and a Collections tree; IA shows Threads, Agents, Runs, Review, Memory & Preferences, Usage.
+- Every module sidebar item points at a real route; a section without screens yet shows its own name and the module's one-line description.
+- The Wiki Collections tree carries one filter, Agent-authored, kept in the sidebar header rather than in the page list.
 - The Assist Panel opens from the top bar button (or its shortcut) on the right of any screen, with its context set to what is on screen, and stays minimal: one live Thread, Ask and Build only, Handoff to carry context onward.
 - The IA module is for deep and autonomous work: scheduled Agents, long analyses, building many work items or epics, Thread history.
 - Humans answer agents in one Review inbox inside IA, Confirmations above Suggestions; the main inbox links there.

@@ -25,3 +25,7 @@ type Story = StoryObj<typeof meta>;
 export const Wiki: Story = { args: { module: "wiki" } };
 
 export const IA: Story = { args: { module: "ia" } };
+
+export const WikiSources: Story = { args: { module: "wiki", section: "sources" } };
+
+export const IaRuns: Story = { args: { module: "ia", section: "runs" } };

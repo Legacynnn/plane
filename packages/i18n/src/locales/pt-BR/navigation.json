@@ -41,5 +41,26 @@
       "wiki": "As páginas e fontes de todo o espaço de trabalho ficarão aqui.",
       "ia": "Threads, agentes, execuções e revisão ficarão aqui."
     }
+  },
+  "module_sidebar": {
+    "wiki": {
+      "new_page": "Nova página",
+      "pages": "Páginas",
+      "collections": "Coleções",
+      "sources": "Fontes",
+      "agent_authored": "Criadas por agentes",
+      "agent_authored_on": "Mostrando apenas páginas criadas por agentes",
+      "no_collections": "Nenhuma coleção ainda",
+      "no_agent_authored": "Nenhuma página criada por agentes ainda"
+    },
+    "ia": {
+      "new_thread": "Nova thread",
+      "threads": "Threads",
+      "agents": "Agentes",
+      "runs": "Execuções",
+      "review": "Revisão",
+      "memory": "Memória e preferências",
+      "usage": "Uso"
+    }
   }
 }
