@@ -1,0 +1,3 @@
+# Own credits ledger, priced from provider-reported usage, no LLM proxy
+
+Every AI call is metered into our own append-only ledger in Credits (1 credit = $0.001 of provider cost × markup; markup 1.0 on self-host), computed from the usage the provider returns (input, cached input, output, reasoning) at the price effective at call time. Prices sync daily from models.dev with LiteLLM's price file as fallback, admins can override, and a monthly reconciliation against provider billing APIs flags drift over 3%. We rejected running a LiteLLM/AI-gateway proxy because its budgets and keys would duplicate the credits system, and calling providers directly keeps OpenAI prompt caching predictable via a stable `prompt_cache_key`.

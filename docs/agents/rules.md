@@ -1,0 +1,10 @@
+# Rules
+
+| Rule                                                                                                                                                                                                                         | Why                                                                                      | Instead of                                                                                                    | Scope                                                   | Enforced |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | -------- |
+| Ask the user and wait for a yes before running any eval (`plane/ai/evals`, `run_evals`, Langfuse experiments); evals are started by humans only and never wired into CI                                                      | every eval case makes real paid model calls                                              | running evals as a routine check after changing a prompt, tool or model, or adding an eval step to a workflow | `apps/api/plane/ai/evals/**`, `.github/workflows/**`    | review   |
+| Every new component ships with a Storybook story: presentational ones in `@plane/propel`, store-bound ones in the `apps/web` Storybook with the mock store provider; an existing component gets its story when it is touched | new shell, IA, Wiki and Settings screens must be reviewable in isolation, in every state | merging a component with no story, or backfilling stories for untouched components                            | `apps/web/core/components/**`, `packages/propel/src/**` | review   |
+
+## Enforced by tools
+
+None yet.
