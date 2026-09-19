@@ -1,0 +1,39 @@
+{
+  "worktree": {
+    "setup": [
+      "for env_file in .env apps/api/.env apps/web/.env apps/admin/.env apps/space/.env apps/live/.env; do if [ ! -f \"$env_file\" ]; then if [ -f \"$PASEO_SOURCE_CHECKOUT_PATH/$env_file\" ]; then cp \"$PASEO_SOURCE_CHECKOUT_PATH/$env_file\" \"$env_file\"; else cp \"$env_file.example\" \"$env_file\"; fi; fi; done",
+      "pnpm install --frozen-lockfile"
+    ]
+  },
+  "scripts": {
+    "backend": {
+      "type": "service",
+      "command": "docker compose -p plane -f docker-compose-local.yml -f docker-compose-local.ports.yml up --build",
+      "port": 18000
+    },
+    "web": {
+      "type": "service",
+      "command": "pnpm dev",
+      "port": 3000
+    },
+    "storybook": {
+      "type": "service",
+      "command": "pnpm --filter=web storybook --no-open",
+      "port": 6007
+    },
+    "storybook-propel": {
+      "type": "service",
+      "command": "pnpm --filter=@plane/propel storybook --no-open",
+      "port": 6006
+    },
+    "check": {
+      "command": "pnpm check"
+    },
+    "test": {
+      "command": "pnpm --filter=web test"
+    },
+    "api-tests": {
+      "command": "docker compose -f docker-compose-test.yml up --build --abort-on-container-exit --exit-code-from api-tests; status=$?; docker compose -f docker-compose-test.yml down -v; exit $status"
+    }
+  }
+}
