@@ -7,7 +7,7 @@ import { compatDedupe, nextCompatAliases } from "../app/compat/next/aliases";
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
-  stories: ["../core/**/*.stories.@(ts|tsx)"],
+  stories: ["../core/**/*.stories.@(ts|tsx)", "../app/**/*.stories.@(ts|tsx)"],
   framework: {
     name: "@storybook/react-vite",
     options: {},

@@ -10,6 +10,7 @@ import { MemoryRouter, Route, Routes } from "react-router";
 import { TranslationProvider } from "@plane/i18n";
 import { StoreContext } from "@/lib/store-context";
 import { RootStore } from "@/store/root.store";
+import { seedWorkspace } from "./fixtures";
 
 type TRouteParameters = {
   path?: string;
@@ -27,13 +28,20 @@ export const withRouter: Decorator = (Story, { parameters }) => {
   );
 };
 
-function MockStoreProvider({ children }: { children: React.ReactNode }) {
-  const [store] = useState(() => new RootStore());
+export type TStoreSetup = (store: RootStore) => void;
+
+function MockStoreProvider({ setup, children }: { setup?: TStoreSetup; children: React.ReactNode }) {
+  const [store] = useState(() => {
+    const root = new RootStore();
+    seedWorkspace(root);
+    setup?.(root);
+    return root;
+  });
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
 }
 
-export const withMockStore: Decorator = (Story) => (
-  <MockStoreProvider>
+export const withMockStore: Decorator = (Story, { parameters }) => (
+  <MockStoreProvider key={JSON.stringify(parameters.route)} setup={parameters.store as TStoreSetup | undefined}>
     <Story />
   </MockStoreProvider>
 );
