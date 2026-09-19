@@ -65,3 +65,15 @@ export const GROUPED_PROFILE_SETTINGS: Record<
   ],
   [PROFILE_SETTINGS_CATEGORY.DEVELOPER]: [PROFILE_SETTINGS["api-tokens"]],
 };
+
+export const ACCOUNT_SETTINGS_ROOT_HREF = "/settings/account";
+
+export const GROUPED_ACCOUNT_SETTINGS: Record<
+  PROFILE_SETTINGS_CATEGORY,
+  { key: TProfileSettingsTabs; i18n_label: string; href: string }[]
+> = Object.fromEntries(
+  Object.entries(GROUPED_PROFILE_SETTINGS).map(([category, items]) => [
+    category,
+    items.map((item) => ({ ...item, href: `${ACCOUNT_SETTINGS_ROOT_HREF}/${item.key}` })),
+  ])
+) as Record<PROFILE_SETTINGS_CATEGORY, { key: TProfileSettingsTabs; i18n_label: string; href: string }[]>;

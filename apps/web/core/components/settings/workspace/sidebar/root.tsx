@@ -8,6 +8,7 @@
 import { ScrollArea } from "@plane/propel/scrollarea";
 import { cn } from "@plane/utils";
 // local imports
+import { AccountSettingsSidebarItemCategories } from "./account-categories";
 import { WorkspaceSettingsSidebarHeader } from "./header";
 import { WorkspaceSettingsSidebarItemCategories } from "./item-categories";
 
@@ -30,6 +31,9 @@ export function WorkspaceSettingsSidebarRoot(props: Props) {
     >
       <WorkspaceSettingsSidebarHeader />
       <WorkspaceSettingsSidebarItemCategories />
+      <div className="flex flex-col border-t border-subtle px-3">
+        <AccountSettingsSidebarItemCategories />
+      </div>
     </ScrollArea>
   );
 }

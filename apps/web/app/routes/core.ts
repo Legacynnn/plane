@@ -268,6 +268,10 @@ export const coreRoutes: RouteConfigEntry[] = [
         layout("./(all)/[workspaceSlug]/(settings)/settings/(workspace)/layout.tsx", [
           route(":workspaceSlug/settings", "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/page.tsx"),
           route(
+            ":workspaceSlug/settings/account/:profileTabId",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/account/[profileTabId]/page.tsx"
+          ),
+          route(
             ":workspaceSlug/settings/members",
             "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/members/page.tsx"
           ),
@@ -406,5 +410,4 @@ export const coreRoutes: RouteConfigEntry[] = [
   route("profile/*", "routes/redirects/core/profile-settings.tsx"),
 
   // Account settings redirects
-  route(":workspaceSlug/settings/account/*", "routes/redirects/core/workspace-account-settings.tsx"),
 ] satisfies RouteConfig;
