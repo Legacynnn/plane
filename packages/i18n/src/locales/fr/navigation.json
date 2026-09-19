@@ -30,5 +30,16 @@
     "upgrade_plan": "Mettre à niveau",
     "plane_pro": "Plane Pro",
     "business": "Business"
+  },
+  "app_rail": {
+    "label": "Modules",
+    "work": "Work",
+    "wiki": "Wiki",
+    "ia": "IA",
+    "settings": "Paramètres",
+    "placeholder": {
+      "wiki": "Les pages et sources de tout l'espace de travail vivront ici.",
+      "ia": "Les fils, agents, exécutions et la revue vivront ici."
+    }
   }
 }

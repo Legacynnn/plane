@@ -252,6 +252,11 @@ export const coreRoutes: RouteConfigEntry[] = [
         ]),
       ]),
 
+      layout("./(all)/[workspaceSlug]/(modules)/layout.tsx", [
+        route(":workspaceSlug/wiki", "./(all)/[workspaceSlug]/(modules)/wiki/page.tsx"),
+        route(":workspaceSlug/ia", "./(all)/[workspaceSlug]/(modules)/ia/page.tsx"),
+      ]),
+
       // ====================================================================
       // SETTINGS SECTION
       // ====================================================================

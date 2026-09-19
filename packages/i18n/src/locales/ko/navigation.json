@@ -30,5 +30,16 @@
     "upgrade_plan": "업그레이드 플랜",
     "plane_pro": "플레인 프로",
     "business": "비즈니스"
+  },
+  "app_rail": {
+    "label": "모듈",
+    "work": "Work",
+    "wiki": "Wiki",
+    "ia": "IA",
+    "settings": "설정",
+    "placeholder": {
+      "wiki": "워크스페이스 전체의 페이지와 소스가 여기에 표시됩니다.",
+      "ia": "스레드, 에이전트, 실행, 검토가 여기에 표시됩니다."
+    }
   }
 }

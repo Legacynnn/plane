@@ -5,6 +5,9 @@
 - Visual language stays Plane's propel tokens and components; the shell stays as close to original Plane as possible, and only new screens are new design.
 - The shell keeps Plane's three parts: top bar (workspace switcher, search with ⌘K, inbox, help, Assist Panel button, avatar), App Rail with icon above label, module sidebar headed by the module name.
 - The App Rail is the module switcher: Work, Wiki, IA, divider, Settings. No other rail items.
+- The active rail item comes from the first path segment after the workspace slug (`/wiki`, `/ia`, `/settings`, anything else is Work); the inbox marks no module.
+- Module names Work, Wiki and IA stay untranslated in every locale. Rail labels may hyphenate onto a second line, never truncate.
+- A module without screens yet shows its icon, name and one line saying what will live there, in CONTEXT.md nouns.
 - The inbox lives in the top bar and collects notifications from all three modules.
 - Each module owns its sidebar: Work keeps today's; Wiki shows collections, nested pages and Sources; IA shows Chats, Agents, Runs, Review, Memory & Preferences, Usage.
 - The Assist Panel opens from the top bar button (or its shortcut) on the right of any screen, with its context set to what is on screen, and stays minimal: one live Thread, Ask and Build only, Handoff to carry context onward.

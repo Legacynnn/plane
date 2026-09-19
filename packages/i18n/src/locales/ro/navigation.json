@@ -30,5 +30,16 @@
     "upgrade_plan": "Actualizare plan",
     "plane_pro": "Plane Pro",
     "business": "Business"
+  },
+  "app_rail": {
+    "label": "Module",
+    "work": "Work",
+    "wiki": "Wiki",
+    "ia": "IA",
+    "settings": "Setări",
+    "placeholder": {
+      "wiki": "Aici vor fi paginile și sursele întregului spațiu de lucru.",
+      "ia": "Aici vor fi firele, agenții, rulările și revizuirea."
+    }
   }
 }

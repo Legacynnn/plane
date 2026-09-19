@@ -30,5 +30,16 @@
     "upgrade_plan": "升級方案",
     "plane_pro": "平面專業版",
     "business": "商業"
+  },
+  "app_rail": {
+    "label": "模組",
+    "work": "Work",
+    "wiki": "Wiki",
+    "ia": "IA",
+    "settings": "設定",
+    "placeholder": {
+      "wiki": "整個工作區的頁面和來源將在這裡。",
+      "ia": "討論串、代理、執行和審核將在這裡。"
+    }
   }
 }

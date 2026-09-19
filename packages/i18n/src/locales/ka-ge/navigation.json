@@ -30,5 +30,16 @@
     "upgrade_plan": "Upgrade plan",
     "plane_pro": "Plane Pro",
     "business": "Business"
+  },
+  "app_rail": {
+    "label": "მოდულები",
+    "work": "Work",
+    "wiki": "Wiki",
+    "ia": "IA",
+    "settings": "პარამეტრები",
+    "placeholder": {
+      "wiki": "აქ იქნება მთელი სამუშაო სივრცის გვერდები და წყაროები.",
+      "ia": "აქ იქნება თემები, აგენტები, გაშვებები და მიმოხილვა."
+    }
   }
 }

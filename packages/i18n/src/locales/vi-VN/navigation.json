@@ -30,5 +30,16 @@
     "upgrade_plan": "Nâng cấp gói",
     "plane_pro": "Plane Pro",
     "business": "Doanh nghiệp"
+  },
+  "app_rail": {
+    "label": "Mô-đun",
+    "work": "Work",
+    "wiki": "Wiki",
+    "ia": "IA",
+    "settings": "Cài đặt",
+    "placeholder": {
+      "wiki": "Trang và nguồn của toàn bộ không gian làm việc sẽ nằm ở đây.",
+      "ia": "Luồng, tác tử, lượt chạy và đánh giá sẽ nằm ở đây."
+    }
   }
 }

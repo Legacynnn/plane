@@ -30,5 +30,16 @@
     "upgrade_plan": "Apgrejduj plan",
     "plane_pro": "Plejn Pro",
     "business": "Biznes"
+  },
+  "app_rail": {
+    "label": "Moduły",
+    "work": "Work",
+    "wiki": "Wiki",
+    "ia": "IA",
+    "settings": "Ustawienia",
+    "placeholder": {
+      "wiki": "Tu znajdą się strony i źródła całego obszaru roboczego.",
+      "ia": "Tu znajdą się wątki, agenci, uruchomienia i przegląd."
+    }
   }
 }

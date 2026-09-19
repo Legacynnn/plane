@@ -30,5 +30,16 @@
     "upgrade_plan": "Apgrejd plán",
     "plane_pro": "Plejn Pro",
     "business": "Biznis"
+  },
+  "app_rail": {
+    "label": "Moduly",
+    "work": "Work",
+    "wiki": "Wiki",
+    "ia": "IA",
+    "settings": "Nastavenia",
+    "placeholder": {
+      "wiki": "Tu budú stránky a zdroje celého pracovného priestoru.",
+      "ia": "Tu budú vlákna, agenti, behy a kontrola."
+    }
   }
 }

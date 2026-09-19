@@ -30,5 +30,16 @@
     "upgrade_plan": "Tingkatkan paket",
     "plane_pro": "Plane Pro",
     "business": "Bisnis"
+  },
+  "app_rail": {
+    "label": "Modul",
+    "work": "Work",
+    "wiki": "Wiki",
+    "ia": "IA",
+    "settings": "Pengaturan",
+    "placeholder": {
+      "wiki": "Halaman dan sumber untuk seluruh ruang kerja akan ada di sini.",
+      "ia": "Utas, agen, eksekusi, dan tinjauan akan ada di sini."
+    }
   }
 }

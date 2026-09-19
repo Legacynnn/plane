@@ -30,5 +30,16 @@
     "upgrade_plan": "Apgreyd plen",
     "plane_pro": "Pleyn Pro",
     "business": "Biznis"
+  },
+  "app_rail": {
+    "label": "Modüller",
+    "work": "Work",
+    "wiki": "Wiki",
+    "ia": "IA",
+    "settings": "Ayarlar",
+    "placeholder": {
+      "wiki": "Tüm çalışma alanının sayfaları ve kaynakları burada olacak.",
+      "ia": "Konular, ajanlar, çalıştırmalar ve inceleme burada olacak."
+    }
   }
 }
