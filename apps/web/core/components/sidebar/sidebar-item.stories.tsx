@@ -43,7 +43,7 @@ export const IconOnly: Story = {
 };
 
 export const LongLabel: Story = {
-  args: { item: { ...meta.args?.item, label: "Einstellungen" } },
+  args: { item: { ...meta.args?.item, label: "Configurações" } },
 };
 
 export const Button: Story = {

@@ -47,5 +47,5 @@ export const IconOnly: Story = {
 };
 
 export const LongestLabels: Story = {
-  parameters: { route: { path: "/acme/settings/" }, locale: "de" },
+  parameters: { route: { path: "/acme/settings/" }, locale: "pt-BR" },
 };
