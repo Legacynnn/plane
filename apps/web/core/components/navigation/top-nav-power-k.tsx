@@ -4,7 +4,7 @@
  * See the LICENSE file for details.
  */
 
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
@@ -13,8 +13,10 @@ import { CloseOutline, SearchOutline } from "@makeplane/propel/icons";
 import { cn } from "@plane/utils";
 // power-k
 import type { TPowerKCommandConfig, TPowerKContext } from "@/components/power-k/core/types";
+import { formatShortcutForDisplay } from "@/components/power-k/ui/modal/command-item-shortcut-badge";
 import { ProjectsAppPowerKCommandsList } from "@/components/power-k/ui/modal/commands-list";
 import { PowerKModalFooter } from "@/components/power-k/ui/modal/footer";
+import type { TTopNavSearchControls } from "@/store/base-power-k.store";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { usePowerK } from "@/hooks/store/use-power-k";
 import { useUser } from "@/hooks/store/user";
@@ -34,7 +36,7 @@ export const TopNavPowerK = observer(() => {
   const [isWorkspaceLevel, setIsWorkspaceLevel] = useState(false);
 
   // store hooks
-  const { activeContext, setActivePage, activePage, setTopNavInputRef } = usePowerK();
+  const { activeContext, setActivePage, activePage, setTopNavInputRef, setTopNavSearchControlsRef } = usePowerK();
   const { data: currentUser } = useUser();
 
   const handleOnClose = useCallback(() => {
@@ -95,13 +97,25 @@ export const TopNavPowerK = observer(() => {
     ]
   );
 
+  const controlsRef = useRef<TTopNavSearchControls | null>(null);
+  useEffect(() => {
+    controlsRef.current = { isOpen, open: openPanel, close: closePanel };
+  });
+
+  useEffect(() => {
+    setTopNavSearchControlsRef(controlsRef);
+    return () => {
+      setTopNavSearchControlsRef(null);
+    };
+  }, [setTopNavSearchControlsRef]);
+
   // Register input ref with PowerK store for keyboard shortcut access
   useEffect(() => {
     setTopNavInputRef(inputRef);
     return () => {
       setTopNavInputRef(null);
     };
-  }, [setTopNavInputRef]);
+  }, [setTopNavInputRef, inputRef]);
 
   const handleClear = () => {
     setSearchTerm("");
@@ -138,8 +152,8 @@ export const TopNavPowerK = observer(() => {
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      // Cmd/Ctrl+K closes the search dropdown
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      // Cmd/Ctrl+K or Cmd/Ctrl+/ closes the search dropdown
+      if ((e.metaKey || e.ctrlKey) && (e.key.toLowerCase() === "k" || e.key === "/")) {
         e.preventDefault();
         closePanel();
         return;
@@ -203,7 +217,7 @@ export const TopNavPowerK = observer(() => {
         return;
       }
     },
-    [searchTerm, activePage, context, shouldShowContextBasedActions, setActivePage, closePanel]
+    [searchTerm, activePage, context, shouldShowContextBasedActions, setActivePage, closePanel, isOpen, containerRef]
   );
 
   return (
@@ -213,18 +227,18 @@ export const TopNavPowerK = observer(() => {
           "w-[554px]": isOpen,
         })}
       >
-        <div
+        <label
+          htmlFor="top-nav-power-k-input"
           className={cn(
             "flex h-7 w-full items-center rounded-lg border border-subtle-1 bg-layer-2 p-2 transition-colors duration-200",
             {
               "bg-layer-1": isOpen,
             }
           )}
-          onClick={() => inputRef.current?.focus()}
-          role="button"
         >
           <SearchOutline className="mr-2 size-3.5 shrink-0 text-placeholder" />
           <input
+            id="top-nav-power-k-input"
             ref={inputRef}
             type="text"
             value={searchTerm}
@@ -238,12 +252,20 @@ export const TopNavPowerK = observer(() => {
             placeholder="Search commands..."
             className="placeholder-text-placeholder min-w-0 flex-1 bg-transparent text-13 text-primary outline-none"
           />
+          {!searchTerm && (
+            <kbd
+              className="pointer-events-none ml-2 hidden h-4 shrink-0 items-center justify-center rounded-sm border border-subtle-1 bg-layer-3 px-1 font-code text-10 font-medium text-tertiary select-none md:inline-flex"
+              aria-hidden="true"
+            >
+              {formatShortcutForDisplay("cmd+/")}
+            </kbd>
+          )}
           {searchTerm && (
             <button type="button" onClick={handleClear} className="ml-2 shrink-0">
               <CloseOutline className="size-3.5 text-placeholder hover:text-primary" />
             </button>
           )}
-        </div>
+        </label>
       </div>
       <div
         className={cn(

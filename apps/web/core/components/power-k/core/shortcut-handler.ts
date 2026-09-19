@@ -81,14 +81,14 @@ export class ShortcutHandler {
       return;
     }
 
-    // Don't handle shortcuts when typing in inputs (except Cmd+K)
-    if (isTypingInInput(e.target)) {
-      return;
-    }
-
     // Handle modifier shortcuts (Cmd+Delete, Cmd+Shift+,, etc.)
     if (hasModifier) {
       this.handleModifierShortcut(e);
+      return;
+    }
+
+    // Don't handle single keys and sequences when typing in inputs
+    if (isTypingInInput(e.target)) {
       return;
     }
 
@@ -102,6 +102,8 @@ export class ShortcutHandler {
   private handleModifierShortcut(e: KeyboardEvent): void {
     const shortcut = formatModifierShortcut(e);
     const command = this.registry.findByModifierShortcut(this.getContext(), shortcut);
+
+    if (command && !command.allowWhileTyping && isTypingInInput(e.target)) return;
 
     if (command && this.canExecuteCommand(command)) {
       e.preventDefault();
