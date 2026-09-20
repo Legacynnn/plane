@@ -14,9 +14,9 @@ import { useInstance } from "@/hooks/store";
 // types
 import type { Route } from "./+types/page";
 // local
-import { InstanceAIForm } from "./form";
+import { InstanceProvidersForm } from "./form";
 
-const InstanceAIPage = observer(function InstanceAIPage(_props: Route.ComponentProps) {
+const InstanceProvidersPage = observer(function InstanceProvidersPage(_props: Route.ComponentProps) {
   // store
   const { fetchInstanceConfigurations, formattedConfig } = useInstance();
 
@@ -25,12 +25,13 @@ const InstanceAIPage = observer(function InstanceAIPage(_props: Route.ComponentP
   return (
     <PageWrapper
       header={{
-        title: "AI features for all your workspaces",
-        description: "Configure your AI API credentials so Plane AI features are turned on for all your workspaces.",
+        title: "Providers",
+        description:
+          "Credentials for the model providers this instance may call. Model availability and pricing live in Model Catalog and Pricing & Markup.",
       }}
     >
       {formattedConfig ? (
-        <InstanceAIForm config={formattedConfig} />
+        <InstanceProvidersForm config={formattedConfig} />
       ) : (
         <Skeleton className="space-y-8">
           <Skeleton.Item height="50px" width="40%" />
@@ -45,6 +46,6 @@ const InstanceAIPage = observer(function InstanceAIPage(_props: Route.ComponentP
   );
 });
 
-export const meta: Route.MetaFunction = () => [{ title: "Artificial Intelligence Settings - God Mode" }];
+export const meta: Route.MetaFunction = () => [{ title: "Providers - God Mode" }];
 
-export default InstanceAIPage;
+export default InstanceProvidersPage;

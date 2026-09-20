@@ -19,9 +19,17 @@ export default [
     route("authentication/gitlab", "./(all)/(dashboard)/authentication/gitlab/page.tsx"),
     route("authentication/google", "./(all)/(dashboard)/authentication/google/page.tsx"),
     route("authentication/gitea", "./(all)/(dashboard)/authentication/gitea/page.tsx"),
-    route("ai", "./(all)/(dashboard)/ai/page.tsx"),
     route("image", "./(all)/(dashboard)/image/page.tsx"),
+    route("providers", "./(all)/(dashboard)/providers/page.tsx"),
+    route("model-catalog", "./(all)/(dashboard)/model-catalog/page.tsx"),
+    route("pricing", "./(all)/(dashboard)/pricing/page.tsx"),
+    route("usage", "./(all)/(dashboard)/usage/page.tsx"),
+    route("evals", "./(all)/(dashboard)/evals/page.tsx"),
+    route("feature-flags", "./(all)/(dashboard)/feature-flags/page.tsx"),
   ]),
+
+  // Legacy URL redirect: /ai → /providers
+  route("ai", "./routes/redirects/ai.tsx"),
   // Catch-all route for 404 handling - must be last
   route("*", "./components/404.tsx"),
 ] satisfies RouteConfig;

@@ -12,3 +12,9 @@ export type TSidebarMenuItem = {
   description: string;
   href: string;
 };
+
+export type TSidebarMenuGroup = {
+  key: string;
+  name: string;
+  items: TSidebarMenuItem[];
+};

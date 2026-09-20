@@ -4,13 +4,35 @@
  * See the LICENSE file for details.
  */
 
-import { BrainCog } from "lucide-react";
 // plane imports
-import { ImageOutline, LockOutline, MailOutline, SettingsOutline, WorkspaceOutline } from "@makeplane/propel/icons";
+import {
+  BoxesOutline,
+  CheckDoneOutline,
+  DollarOutline,
+  FlagOutline,
+  ImageOutline,
+  LockOutline,
+  MailOutline,
+  ServerOutline,
+  SettingsOutline,
+  UsageOutline,
+  WorkspaceOutline,
+} from "@makeplane/propel/icons";
 // types
 import type { TSidebarMenuItem } from "./types";
 
-export type TCoreSidebarMenuKey = "general" | "email" | "workspace" | "authentication" | "ai" | "image";
+export type TCoreSidebarMenuKey =
+  | "general"
+  | "email"
+  | "workspace"
+  | "authentication"
+  | "image"
+  | "providers"
+  | "model-catalog"
+  | "pricing"
+  | "usage"
+  | "evals"
+  | "feature-flags";
 
 export const coreSidebarMenuLinks: Record<TCoreSidebarMenuKey, TSidebarMenuItem> = {
   general: {
@@ -37,16 +59,46 @@ export const coreSidebarMenuLinks: Record<TCoreSidebarMenuKey, TSidebarMenuItem>
     description: "Configure authentication modes.",
     href: `/authentication/`,
   },
-  ai: {
-    Icon: BrainCog,
-    name: "Artificial intelligence",
-    description: "Configure your OpenAI creds.",
-    href: `/ai/`,
-  },
   image: {
     Icon: ImageOutline,
     name: "Images in Plane",
     description: "Allow third-party image libraries.",
     href: `/image/`,
+  },
+  providers: {
+    Icon: ServerOutline,
+    name: "Providers",
+    description: "Credentials and status per model provider.",
+    href: `/providers/`,
+  },
+  "model-catalog": {
+    Icon: BoxesOutline,
+    name: "Model Catalog",
+    description: "Every model this instance knows, and what it may be used for.",
+    href: `/model-catalog/`,
+  },
+  pricing: {
+    Icon: DollarOutline,
+    name: "Pricing & Markup",
+    description: "What each model costs and what you charge for it.",
+    href: `/pricing/`,
+  },
+  usage: {
+    Icon: UsageOutline,
+    name: "Usage",
+    description: "Metered calls across every workspace on this instance.",
+    href: `/usage/`,
+  },
+  evals: {
+    Icon: CheckDoneOutline,
+    name: "Eval results",
+    description: "How the agents score on the eval suite.",
+    href: `/evals/`,
+  },
+  "feature-flags": {
+    Icon: FlagOutline,
+    name: "Feature flags",
+    description: "Turn instance features on and off.",
+    href: `/feature-flags/`,
   },
 };

@@ -15,13 +15,13 @@ import { TOAST_TYPE, setToast } from "@/providers/toast";
 // hooks
 import { useInstance } from "@/hooks/store";
 
-type IInstanceAIForm = {
+type TInstanceProvidersForm = {
   config: IFormattedInstanceConfiguration;
 };
 
 type AIFormValues = Record<TInstanceAIConfigurationKeys, string>;
 
-export function InstanceAIForm(props: IInstanceAIForm) {
+export function InstanceProvidersForm(props: TInstanceProvidersForm) {
   const { config } = props;
   // store
   const { updateInstanceConfigurations } = useInstance();
