@@ -10,17 +10,19 @@ import { EUserPermissions } from "@plane/types";
 import type { TStoreSetup } from "../../../../../.storybook/decorators";
 import { WorkspaceSettingsSidebarRoot } from "./root";
 
-const asGuest: TStoreSetup = (store) =>
-  runInAction(() => {
-    store.user.permission.workspaceUserInfo.acme.role = EUserPermissions.GUEST;
-  });
+const asRole =
+  (role: EUserPermissions): TStoreSetup =>
+  (store) =>
+    runInAction(() => {
+      store.user.permission.workspaceUserInfo.acme.role = role;
+    });
 
 const meta: Meta<typeof WorkspaceSettingsSidebarRoot> = {
   title: "Settings/WorkspaceSettingsSidebarRoot",
   component: WorkspaceSettingsSidebarRoot,
   decorators: [
     (Story) => (
-      <div className="flex h-[700px] bg-surface-1">
+      <div className="flex h-screen bg-surface-1">
         <Story />
       </div>
     ),
@@ -37,8 +39,16 @@ export const AccountActive: Story = {
   parameters: { route: { path: "/acme/settings/account/preferences/" } },
 };
 
+export const Member: Story = {
+  parameters: { store: asRole(EUserPermissions.MEMBER) },
+};
+
 export const Guest: Story = {
-  parameters: { store: asGuest },
+  parameters: { store: asRole(EUserPermissions.GUEST) },
+};
+
+export const CodebaseActive: Story = {
+  parameters: { route: { path: "/acme/settings/code-scopes/" } },
 };
 
 export const PortugueseBrazil: Story = {

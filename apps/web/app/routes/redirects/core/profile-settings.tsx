@@ -4,15 +4,45 @@
  * See the LICENSE file for details.
  */
 
-import { redirect } from "react-router";
+import { useEffect } from "react";
+import { observer } from "mobx-react";
+import type { TProfileSettingsTabs } from "@plane/types";
+// components
+import { LogoSpinner } from "@/components/common/logo-spinner";
+// hooks
+import { useUserSettings } from "@/hooks/store/user";
+import { useAppRouter } from "@/hooks/use-app-router";
+// lib
+import { getAccountSettingsHref, getAccountSettingsTab } from "@/lib/settings-nav";
+import { AuthenticationWrapper } from "@/lib/wrappers/authentication-wrapper";
+
 import type { Route } from "./+types/profile-settings";
 
-export const clientLoader = ({ params, request }: Route.ClientLoaderArgs) => {
-  const searchParams = new URL(request.url).searchParams;
-  const splat = params["*"] || "";
-  throw redirect(`/settings/profile/${splat || "general"}?${searchParams.toString()}`);
-};
+const AccountSettingsRedirect = observer(function AccountSettingsRedirect({ tab }: { tab: TProfileSettingsTabs }) {
+  // router
+  const router = useAppRouter();
+  // store hooks
+  const { data: userSettings } = useUserSettings();
+  // derived values
+  const workspaceSlug =
+    userSettings?.workspace?.last_workspace_slug ?? userSettings?.workspace?.fallback_workspace_slug;
 
-export default function ProfileSettings() {
-  return null;
+  useEffect(() => {
+    if (!userSettings?.id) return;
+    router.replace(getAccountSettingsHref(workspaceSlug, tab));
+  }, [router, tab, userSettings?.id, workspaceSlug]);
+
+  return (
+    <div className="grid size-full place-items-center">
+      <LogoSpinner />
+    </div>
+  );
+});
+
+export default function ProfileSettings({ params }: Route.ComponentProps) {
+  return (
+    <AuthenticationWrapper>
+      <AccountSettingsRedirect tab={getAccountSettingsTab(params["*"])} />
+    </AuthenticationWrapper>
+  );
 }

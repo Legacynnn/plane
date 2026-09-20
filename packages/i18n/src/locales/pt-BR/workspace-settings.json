@@ -68,7 +68,7 @@
       "billing_and_plans": {
         "heading": "Faturamento e planos",
         "description": "Escolha seu plano, gerencie assinaturas e faça upgrade facilmente conforme suas necessidades crescem.",
-        "title": "Faturamento e planos",
+        "title": "Faturamento e créditos",
         "current_plan": "Plano atual",
         "free_plan": "Você está usando o plano gratuito atualmente",
         "view_plans": "Ver planos"
@@ -484,6 +484,38 @@
         "heading": "Scripts",
         "new_script": "Novo Script",
         "description": "Automatize seus fluxos de trabalho com scripts personalizados e regras de automação."
+      },
+      "connectors": {
+        "title": "Conectores",
+        "placeholder": "Conectores de Slack, GitHub e GitLab ficam aqui, cada um com seu status e sua configuração."
+      },
+      "repositories": {
+        "title": "Repositórios",
+        "placeholder": "Repositórios espelhados somente para leitura pelos agentes, com o Repository Map e o status de sincronização."
+      },
+      "code_scopes": {
+        "title": "Code Scopes",
+        "placeholder": "O vínculo entre um projeto e um repositório, opcionalmente restrito a caminhos."
+      },
+      "agent_defaults": {
+        "title": "Padrões de agentes",
+        "placeholder": "Padrões válidos para todo o espaço de trabalho. Cada agente é configurado no módulo IA."
+      },
+      "workspace_preferences": {
+        "title": "Preferências do espaço de trabalho",
+        "placeholder": "Instruções permanentes que todo agente deste espaço de trabalho segue."
+      },
+      "workspace_pool": {
+        "title": "Pool e limites de agentes",
+        "placeholder": "Os créditos mensais compartilhados do espaço de trabalho e o teto opcional de um agente."
+      },
+      "workspace_api_tokens": {
+        "title": "Tokens de API",
+        "placeholder": "Tokens do espaço de trabalho para sistemas externos. Seus tokens pessoais ficam nas configurações da conta."
+      },
+      "mcp_access": {
+        "title": "Acesso MCP",
+        "placeholder": "Quais clientes MCP podem alcançar este espaço de trabalho e o que podem fazer."
       }
     },
     "empty_state": {

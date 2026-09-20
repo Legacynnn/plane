@@ -717,7 +717,10 @@
     "developer": "Developer",
     "work_structure": "Work structure",
     "execution": "Execution",
-    "administration": "Administration"
+    "administration": "Administration",
+    "connectors": "Conectores",
+    "codebase": "Código",
+    "ia": "IA"
   },
   "chart": {
     "x_axis": "Eixo X",

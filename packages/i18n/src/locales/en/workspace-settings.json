@@ -68,7 +68,7 @@
       "billing_and_plans": {
         "heading": "Billing & Plans",
         "description": "Choose your plan, manage subscriptions, and easily upgrade as your needs grow.",
-        "title": "Billing & Plans",
+        "title": "Billing & Credits",
         "current_plan": "Current plan",
         "free_plan": "You are currently using the free plan",
         "view_plans": "View plans"
@@ -484,6 +484,38 @@
         "heading": "Scripts",
         "new_script": "New Script",
         "description": "Automate your workflows with custom scripts and automation rules."
+      },
+      "connectors": {
+        "title": "Connectors",
+        "placeholder": "Slack, GitHub and GitLab Connectors land here, each with its status and its own config."
+      },
+      "repositories": {
+        "title": "Repositories",
+        "placeholder": "Repositories mirrored read-only for agents, with their Repository Map and sync status."
+      },
+      "code_scopes": {
+        "title": "Code Scopes",
+        "placeholder": "The link between a project and a repository, optionally narrowed to paths."
+      },
+      "agent_defaults": {
+        "title": "Agent defaults",
+        "placeholder": "Workspace-wide defaults for agents. Individual Agents are configured in the IA module."
+      },
+      "workspace_preferences": {
+        "title": "Workspace Preferences",
+        "placeholder": "Standing instructions every agent in this workspace follows."
+      },
+      "workspace_pool": {
+        "title": "Pool & Agent Caps",
+        "placeholder": "The workspace's shared monthly credits and the optional ceiling on a single agent."
+      },
+      "workspace_api_tokens": {
+        "title": "API tokens",
+        "placeholder": "Workspace-scoped tokens for external systems. Your personal tokens live in account settings."
+      },
+      "mcp_access": {
+        "title": "MCP access",
+        "placeholder": "Which MCP clients may reach this workspace, and what they are allowed to do."
       }
     },
     "empty_state": {
