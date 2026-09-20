@@ -17,6 +17,8 @@
 - Humans answer agents in one Review inbox inside IA, Confirmations above Suggestions; the main inbox links there.
 - Connectors are managed in Settings, never inside Wiki.
 - Workspace Settings groups: Workspace, Connectors, Codebase, IA, Developer. Agents are configured in the IA module, not in Settings.
+- Connectors is one Settings entry and renders without a group heading; every other group heads its items.
+- API tokens in Settings are workspace-scoped; a member's own tokens stay in account settings.
 - Account settings gain User Preferences, linked accounts and personal usage.
 - God Mode groups: Providers, Model Catalog, Pricing & Markup, Usage, Eval results, Feature flags.
 - Every new component ships with a Storybook story; existing components get one when touched.

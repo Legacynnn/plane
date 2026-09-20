@@ -295,6 +295,35 @@ export const coreRoutes: RouteConfigEntry[] = [
             "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/exports/page.tsx"
           ),
           route(
+            ":workspaceSlug/settings/connectors",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/connectors/page.tsx"
+          ),
+          route(
+            ":workspaceSlug/settings/repositories",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/repositories/page.tsx"
+          ),
+          route(
+            ":workspaceSlug/settings/code-scopes",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/code-scopes/page.tsx"
+          ),
+          route(
+            ":workspaceSlug/settings/agent-defaults",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/agent-defaults/page.tsx"
+          ),
+          route(
+            ":workspaceSlug/settings/preferences",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/preferences/page.tsx"
+          ),
+          route(
+            ":workspaceSlug/settings/pool",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/pool/page.tsx"
+          ),
+          route(
+            ":workspaceSlug/settings/api-tokens",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/api-tokens/page.tsx"
+          ),
+          route(":workspaceSlug/settings/mcp", "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/mcp/page.tsx"),
+          route(
             ":workspaceSlug/settings/webhooks",
             "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/webhooks/page.tsx"
           ),
@@ -369,17 +398,6 @@ export const coreRoutes: RouteConfigEntry[] = [
         ]),
       ]),
     ]),
-    // ======================================================================
-    // STANDALONE ROUTES (outside workspace context)
-    // ======================================================================
-
-    // --------------------------------------------------------------------
-    // PROFILE SETTINGS
-    // --------------------------------------------------------------------
-
-    layout("./(all)/settings/profile/layout.tsx", [
-      route("settings/profile/:profileTabId", "./(all)/settings/profile/[profileTabId]/page.tsx"),
-    ]),
   ]),
 
   // ========================================================================
@@ -398,10 +416,6 @@ export const coreRoutes: RouteConfigEntry[] = [
   // Analytics redirect: /:workspaceSlug/analytics → /:workspaceSlug/analytics/overview
   route(":workspaceSlug/analytics", "routes/redirects/core/analytics.tsx"),
 
-  // API tokens redirect: /:workspaceSlug/settings/api-tokens
-  // → /settings/profile/api-tokens
-  route(":workspaceSlug/settings/api-tokens", "routes/redirects/core/api-tokens.tsx"),
-
   // Inbox redirect: /:workspaceSlug/projects/:projectId/inbox
   // → /:workspaceSlug/projects/:projectId/intake
   route(":workspaceSlug/projects/:projectId/inbox", "routes/redirects/core/inbox.tsx"),
@@ -417,8 +431,10 @@ export const coreRoutes: RouteConfigEntry[] = [
   // Register redirect
   route("register", "routes/redirects/core/register.tsx"),
 
-  // Profile settings redirects
+  // Account settings redirects: /profile/:tab and /settings/profile/:tab
+  // → /:workspaceSlug/settings/account/:tab
   route("profile/*", "routes/redirects/core/profile-settings.tsx"),
+  route("settings/profile/*", "routes/redirects/core/profile-settings.tsx", { id: "redirects/settings-profile" }),
 
   // Account settings redirects
 ] satisfies RouteConfig;

@@ -50,6 +50,9 @@ _Avoid_: Approval (reserved for Work workflows)
 **Triggering User**:
 The human whose action started a run. A run they trigger can never do more than they are allowed to do.
 
+**Agent defaults**:
+The model, tool set and budget a new agent starts with in a workspace. A single Agent overrides them in the IA module.
+
 **Workspace Preferences**:
 Conventions every agent follows in a workspace (tone, definition of done, labeling rules). Admin-owned; agents may only propose changes.
 

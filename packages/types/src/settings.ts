@@ -10,13 +10,26 @@ import type { EUserWorkspaceRoles } from "./workspace";
 
 export type TProfileSettingsTabs = "general" | "preferences" | "notifications" | "security" | "api-tokens";
 
-export type TWorkspaceSettingsTabs = "general" | "members" | "billing-and-plans" | "export" | "webhooks";
+export type TWorkspaceSettingsTabs =
+  | "general"
+  | "members"
+  | "billing-and-plans"
+  | "export"
+  | "connectors"
+  | "repositories"
+  | "code-scopes"
+  | "agent-defaults"
+  | "workspace-preferences"
+  | "workspace-pool"
+  | "api-tokens"
+  | "webhooks"
+  | "mcp-access";
 export type TWorkspaceSettingsItem = {
   key: TWorkspaceSettingsTabs;
   i18n_label: string;
+  i18n_placeholder?: string;
   href: string;
   access: EUserWorkspaceRoles[];
-  highlight: (pathname: string, baseUrl: string) => boolean;
 };
 
 export type TProjectSettingsTabs =

@@ -4,6 +4,5 @@
  * See the LICENSE file for details.
  */
 
-import type { RouteConfigEntry } from "@react-router/dev/routes";
-
-export const extendedRedirectRoutes: RouteConfigEntry[] = [];
+export * from "./account-settings-redirect";
+export * from "./workspace-settings-nav";

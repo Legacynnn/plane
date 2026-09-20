@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { runInAction } from "mobx";
 import { EUserPermissions } from "@plane/types";
 import type { TStoreSetup } from "../../../../../.storybook/decorators";
-import { WorkspaceSettingsSidebarRoot } from "./root";
+import { WorkspaceSettingsSidebarItemCategories } from "./item-categories";
 
 const asRole =
   (role: EUserPermissions): TStoreSetup =>
@@ -17,12 +17,12 @@ const asRole =
       store.user.permission.workspaceUserInfo.acme.role = role;
     });
 
-const meta: Meta<typeof WorkspaceSettingsSidebarRoot> = {
-  title: "Settings/WorkspaceSettingsSidebarRoot",
-  component: WorkspaceSettingsSidebarRoot,
+const meta: Meta<typeof WorkspaceSettingsSidebarItemCategories> = {
+  title: "Settings/WorkspaceSettingsSidebarItemCategories",
+  component: WorkspaceSettingsSidebarItemCategories,
   decorators: [
     (Story) => (
-      <div className="flex h-screen bg-surface-1">
+      <div className="w-[250px] bg-surface-1 py-3">
         <Story />
       </div>
     ),
@@ -33,11 +33,7 @@ const meta: Meta<typeof WorkspaceSettingsSidebarRoot> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
-
-export const AccountActive: Story = {
-  parameters: { route: { path: "/acme/settings/account/preferences/" } },
-};
+export const Admin: Story = {};
 
 export const Member: Story = {
   parameters: { store: asRole(EUserPermissions.MEMBER) },
@@ -47,8 +43,12 @@ export const Guest: Story = {
   parameters: { store: asRole(EUserPermissions.GUEST) },
 };
 
-export const CodebaseActive: Story = {
-  parameters: { route: { path: "/acme/settings/code-scopes/" } },
+export const IaSectionActive: Story = {
+  parameters: { route: { path: "/acme/settings/preferences/" } },
+};
+
+export const WebhookDetailActive: Story = {
+  parameters: { route: { path: "/acme/settings/webhooks/9f2c/" } },
 };
 
 export const PortugueseBrazil: Story = {

@@ -6,10 +6,18 @@
 
 import type { LucideIcon } from "lucide-react";
 import {
+  AgentOutline,
   BillingsOutline,
   BuildingOutline,
+  CodeOutline,
+  ConnectionsOutline,
   ExportOutline,
+  KeyOutline,
   MembersOutline,
+  PreferencesOutline,
+  ScopeOutline,
+  ServerOutline,
+  UsageOutline,
   WebhooksOutline,
 } from "@makeplane/propel/icons";
 // plane imports
@@ -21,5 +29,13 @@ export const WORKSPACE_SETTINGS_ICONS: Record<TWorkspaceSettingsTabs, LucideIcon
   members: MembersOutline,
   export: ExportOutline,
   "billing-and-plans": BillingsOutline,
+  connectors: ConnectionsOutline,
+  repositories: CodeOutline,
+  "code-scopes": ScopeOutline,
+  "agent-defaults": AgentOutline,
+  "workspace-preferences": PreferencesOutline,
+  "workspace-pool": UsageOutline,
+  "api-tokens": KeyOutline,
   webhooks: WebhooksOutline,
+  "mcp-access": ServerOutline,
 };

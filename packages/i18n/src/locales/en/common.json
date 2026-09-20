@@ -717,7 +717,9 @@
     "developer": "Developer",
     "work_structure": "Work structure",
     "execution": "Execution",
-    "administration": "Administration"
+    "connectors": "Connectors",
+    "codebase": "Codebase",
+    "ia": "IA"
   },
   "chart": {
     "x_axis": "X-axis",
