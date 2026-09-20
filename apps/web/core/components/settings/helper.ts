@@ -4,7 +4,13 @@
  * See the LICENSE file for details.
  */
 
-import { GROUPED_WORKSPACE_SETTINGS, PROJECT_SETTINGS_FLAT_MAP } from "@plane/constants";
+import {
+  ACCOUNT_SETTINGS_ROOT_HREF,
+  GROUPED_WORKSPACE_SETTINGS,
+  PROFILE_SETTINGS,
+  PROJECT_SETTINGS_FLAT_MAP,
+} from "@plane/constants";
+import type { TProfileSettingsTabs } from "@plane/types";
 
 const hrefToLabelMap = (options: Record<string, Array<{ href: string; i18n_label: string; [key: string]: any }>>) =>
   Object.values(options)
@@ -31,7 +37,7 @@ export const pathnameToAccessKey = (pathname: string) => {
   const pathArray = pathname.replace(/^\/|\/$/g, "").split("/"); // Regex removes leading and trailing slashes
   const workspaceSlug = pathArray[0];
   const accessKey = pathArray.slice(1, 3).join("/");
-  return { workspaceSlug, accessKey: `/${accessKey}` || "" };
+  return { workspaceSlug, accessKey: `/${accessKey}` };
 };
 
 export const getWorkspaceActivePath = (pathname: string) => {
@@ -39,6 +45,10 @@ export const getWorkspaceActivePath = (pathname: string) => {
   const settingsIndex = parts.indexOf("settings");
   if (settingsIndex === -1) return null;
   const subPath = "/" + parts.slice(settingsIndex, settingsIndex + 2).join("/");
+  if (subPath === ACCOUNT_SETTINGS_ROOT_HREF) {
+    const tab = (parts[settingsIndex + 2] ?? "general") as TProfileSettingsTabs;
+    return PROFILE_SETTINGS[tab]?.i18n_label;
+  }
   return workspaceHrefToLabelMap[subPath];
 };
 

@@ -49,6 +49,11 @@ export const NotAuthorized: Story = { parameters: { store: asMember } };
 
 export const Narrow: Story = { globals: { viewport: { value: "mobile1" } } };
 
+export const AccountNarrow: Story = {
+  parameters: { route: { path: "/acme/settings/account/preferences/" } },
+  globals: { viewport: { value: "mobile1" } },
+};
+
 export const Dark: Story = { parameters: { theme: "dark" } };
 
 export const PortugueseBrazil: Story = { parameters: { locale: "pt-BR" } };
