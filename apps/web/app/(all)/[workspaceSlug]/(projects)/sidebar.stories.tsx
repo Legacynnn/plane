@@ -97,3 +97,5 @@ export const Guest: Story = { parameters: { store: asGuest } };
 export const Narrow: Story = { parameters: { width: "narrow" } };
 
 export const PortugueseBrazil: Story = { parameters: { locale: "pt-BR" } };
+
+export const Dark: Story = { parameters: { theme: "dark" } };

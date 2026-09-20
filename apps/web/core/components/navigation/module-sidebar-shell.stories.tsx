@@ -47,3 +47,13 @@ export const Collapsed: Story = {
   args: { children: <WikiSidebar collections={WIKI_COLLECTIONS} /> },
   parameters: { store: collapsed },
 };
+
+export const IaCollapsed: Story = {
+  args: { children: <IaSidebar /> },
+  parameters: { route: { path: "/acme/ia" }, store: collapsed },
+};
+
+export const Dark: Story = {
+  args: { children: <WikiSidebar collections={WIKI_COLLECTIONS} /> },
+  parameters: { theme: "dark" },
+};

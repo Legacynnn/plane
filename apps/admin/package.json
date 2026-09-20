@@ -15,7 +15,9 @@
     "check:types": "react-router typegen && tsc --noEmit",
     "check:format": "oxfmt --check .",
     "fix:lint": "oxlint --fix .",
-    "fix:format": "oxfmt ."
+    "fix:format": "oxfmt .",
+    "storybook": "storybook dev -p 6008",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@bprogress/core": "catalog:",
@@ -48,12 +50,14 @@
     "@plane/tailwind-config": "workspace:*",
     "@plane/typescript-config": "workspace:*",
     "@react-router/dev": "catalog:",
+    "@storybook/react-vite": "catalog:",
     "@tailwindcss/postcss": "catalog:",
     "@types/lodash-es": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "dotenv": "catalog:",
+    "storybook": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-tsconfig-paths": "catalog:"

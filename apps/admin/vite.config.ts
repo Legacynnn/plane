@@ -4,6 +4,7 @@ import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { joinUrlPath } from "@plane/utils";
+import { compatDedupe, nextCompatAliases } from "./app/compat/next/aliases";
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
@@ -27,12 +28,8 @@ export default defineConfig(() => ({
   },
   plugins: [reactRouter(), tsconfigPaths({ projects: [path.resolve(__dirname, "tsconfig.json")] })],
   resolve: {
-    alias: {
-      // Next.js compatibility shims used within admin
-      "next/link": path.resolve(__dirname, "app/compat/next/link.tsx"),
-      "next/navigation": path.resolve(__dirname, "app/compat/next/navigation.ts"),
-    },
-    dedupe: ["react", "react-dom"],
+    alias: nextCompatAliases(__dirname),
+    dedupe: compatDedupe,
   },
   server: {
     host: "127.0.0.1",
