@@ -4,11 +4,13 @@
  * See the LICENSE file for details.
  */
 
+import type { WORKSPACE_SETTINGS_CATEGORY } from "@plane/constants";
 import { GROUPED_WORKSPACE_SETTINGS, WORKSPACE_SETTINGS_CATEGORIES } from "@plane/constants";
 import type { EUserWorkspaceRoles, TWorkspaceSettingsItem } from "@plane/types";
+import { joinUrlPath } from "@plane/utils";
 
 export type TAccessibleWorkspaceSettingsCategory = {
-  key: string;
+  key: WORKSPACE_SETTINGS_CATEGORY;
   i18n_label: string;
   showLabel: boolean;
   items: TWorkspaceSettingsItem[];
@@ -16,7 +18,8 @@ export type TAccessibleWorkspaceSettingsCategory = {
 
 const WORKSPACE_SETTINGS_ROOT_HREF = "/settings";
 
-export const getWorkspaceSettingsHref = (workspaceSlug: string, href: string): string => `/${workspaceSlug}${href}`;
+export const getWorkspaceSettingsHref = (workspaceSlug: string, href: string): string =>
+  joinUrlPath(workspaceSlug, href);
 
 export const isWorkspaceSettingsItemActive = (pathname: string, workspaceSlug: string, href: string): boolean => {
   const current = pathname.replace(/\/+$/, "");
@@ -29,7 +32,7 @@ export const getAccessibleWorkspaceSettings = (
   hasAccess: (access: EUserWorkspaceRoles[]) => boolean
 ): TAccessibleWorkspaceSettingsCategory[] =>
   WORKSPACE_SETTINGS_CATEGORIES.map((category) => ({
-    key: category.key as string,
+    key: category.key,
     i18n_label: category.i18n_label,
     showLabel: category.showLabel,
     items: GROUPED_WORKSPACE_SETTINGS[category.key].filter((item) => hasAccess(item.access)),

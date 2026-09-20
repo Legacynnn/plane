@@ -48,7 +48,7 @@ export const WorkspaceSettingsPlaceholder = observer(function WorkspaceSettingsP
       <EmptyStateCompact
         asset={<Icon className="size-8 text-placeholder" />}
         title={title}
-        description={t(settingsDetails.i18n_label.replace(".title", ".placeholder"))}
+        description={settingsDetails.i18n_placeholder ? t(settingsDetails.i18n_placeholder) : undefined}
         rootClassName="px-4"
         className="text-balance"
       />

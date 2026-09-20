@@ -6,6 +6,7 @@
 
 import { useEffect } from "react";
 import { observer } from "mobx-react";
+import { useLocation } from "react-router";
 import type { TProfileSettingsTabs } from "@plane/types";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
@@ -21,6 +22,7 @@ import type { Route } from "./+types/profile-settings";
 const AccountSettingsRedirect = observer(function AccountSettingsRedirect({ tab }: { tab: TProfileSettingsTabs }) {
   // router
   const router = useAppRouter();
+  const { search } = useLocation();
   // store hooks
   const { data: userSettings } = useUserSettings();
   // derived values
@@ -29,8 +31,8 @@ const AccountSettingsRedirect = observer(function AccountSettingsRedirect({ tab 
 
   useEffect(() => {
     if (!userSettings?.id) return;
-    router.replace(getAccountSettingsHref(workspaceSlug, tab));
-  }, [router, tab, userSettings?.id, workspaceSlug]);
+    router.replace(`${getAccountSettingsHref(workspaceSlug, tab)}${search}`);
+  }, [router, search, tab, userSettings?.id, workspaceSlug]);
 
   return (
     <div className="grid size-full place-items-center">

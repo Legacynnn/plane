@@ -27,6 +27,7 @@ export type TWorkspaceSettingsTabs =
 export type TWorkspaceSettingsItem = {
   key: TWorkspaceSettingsTabs;
   i18n_label: string;
+  i18n_placeholder?: string;
   href: string;
   access: EUserWorkspaceRoles[];
 };

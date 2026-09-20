@@ -9,9 +9,9 @@ import { usePathname } from "next/navigation";
 import { useParams } from "react-router";
 import { GROUPED_ACCOUNT_SETTINGS, PROFILE_SETTINGS_CATEGORIES } from "@plane/constants";
 import { useTranslation } from "@plane/i18n";
-import { joinUrlPath } from "@plane/utils";
 import { SettingsSidebarItem } from "@/components/settings/sidebar/item";
 import { PROFILE_SETTINGS_ICONS } from "@/components/settings/profile/sidebar/item-icon";
+import { getWorkspaceSettingsHref, isWorkspaceSettingsItemActive } from "@/lib/settings-nav";
 
 export const AccountSettingsSidebarItemCategories = observer(function AccountSettingsSidebarItemCategories() {
   const { workspaceSlug } = useParams();
@@ -28,8 +28,8 @@ export const AccountSettingsSidebarItemCategories = observer(function AccountSet
           <SettingsSidebarItem
             key={item.key}
             as="link"
-            href={joinUrlPath(workspaceSlug ?? "", item.href)}
-            isActive={new RegExp(`^/${workspaceSlug}${item.href}/`).test(pathname)}
+            href={getWorkspaceSettingsHref(workspaceSlug ?? "", item.href)}
+            isActive={isWorkspaceSettingsItemActive(pathname, workspaceSlug ?? "", item.href)}
             icon={PROFILE_SETTINGS_ICONS[item.key]}
             label={t(item.i18n_label)}
           />
