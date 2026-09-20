@@ -6,6 +6,7 @@
 from django.core.management.base import BaseCommand
 
 # Module imports
+from plane.ai.adoption import adopt_instance_llm_configuration
 from plane.utils.ai_catalog_seed import seed_ai_catalog
 
 
@@ -17,3 +18,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS("AI catalog seeded"))
         else:
             self.stdout.write(self.style.WARNING("AI catalog already present, seed skipped"))
+
+        if adopt_instance_llm_configuration():
+            self.stdout.write(self.style.SUCCESS("Instance LLM configuration adopted into the catalog"))
