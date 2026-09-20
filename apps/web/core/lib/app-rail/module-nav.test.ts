@@ -5,7 +5,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { IA_NAV_ITEMS, WIKI_NAV_ITEMS, getModuleNavHref, isModuleNavItemActive } from "./module-nav";
+import { IA_NAV_ITEMS, WIKI_NAV_ITEMS, getModuleNavHref, getModuleRootHref, isModuleNavItemActive } from "./module-nav";
 
 describe("module nav items", () => {
   it("lists the Wiki sections in order", () => {
@@ -14,6 +14,17 @@ describe("module nav items", () => {
 
   it("lists the IA sections in order", () => {
     expect(IA_NAV_ITEMS.map((item) => item.key)).toEqual(["threads", "agents", "runs", "review", "memory", "usage"]);
+  });
+});
+
+describe("getModuleRootHref", () => {
+  it("sends Work to the workspace root", () => {
+    expect(getModuleRootHref("acme", "work")).toBe("/acme");
+  });
+
+  it("sends the other modules to their own segment", () => {
+    expect(getModuleRootHref("acme", "wiki")).toBe("/acme/wiki");
+    expect(getModuleRootHref("acme", "ia")).toBe("/acme/ia");
   });
 });
 

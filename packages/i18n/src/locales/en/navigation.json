@@ -49,7 +49,6 @@
       "collections": "Collections",
       "sources": "Sources",
       "agent_authored": "Agent-authored",
-      "agent_authored_on": "Showing agent-authored pages only",
       "no_collections": "No collections yet",
       "no_agent_authored": "No agent-authored pages yet"
     },

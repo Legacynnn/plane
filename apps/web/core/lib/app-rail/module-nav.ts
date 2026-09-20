@@ -25,6 +25,9 @@ export const IA_NAV_ITEMS: TModuleNavItem[] = [
   { key: "usage", path: "usage" },
 ];
 
+export const getModuleRootHref = (workspaceSlug: string, module: TAppModule): string =>
+  module === "work" ? `/${workspaceSlug}` : `/${workspaceSlug}/${module}`;
+
 export const getModuleNavHref = (workspaceSlug: string, module: TAppModule, path: string): string =>
   path ? `/${workspaceSlug}/${module}/${path}` : `/${workspaceSlug}/${module}`;
 

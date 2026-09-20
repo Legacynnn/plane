@@ -8,6 +8,21 @@ import { action, observable, makeObservable } from "mobx";
 import { computedFn } from "mobx-utils";
 import type { TPowerKCommandConfig, TPowerKContext, TPowerKCommandGroup } from "./types";
 
+export const findShortcutClashes = (commands: TPowerKCommandConfig[]): string[] => {
+  const owners = new Map<string, string>();
+  const clashes: string[] = [];
+  for (const command of commands) {
+    for (const shortcut of [command.shortcut, command.keySequence, command.modifierShortcut]) {
+      if (!shortcut) continue;
+      const key = shortcut.toLowerCase();
+      const owner = owners.get(key);
+      if (owner && owner !== command.id) clashes.push(`${key}: ${owner} and ${command.id}`);
+      else owners.set(key, command.id);
+    }
+  }
+  return clashes;
+};
+
 export interface IPowerKCommandRegistry {
   // observables
   commands: Map<string, TPowerKCommandConfig>;
@@ -59,6 +74,10 @@ export class PowerKCommandRegistry implements IPowerKCommandRegistry {
 
   registerMultiple: IPowerKCommandRegistry["registerMultiple"] = action((commands) => {
     commands.forEach((command) => this.register(command));
+    const clashes = import.meta.env.DEV ? findShortcutClashes(commands) : [];
+    if (clashes.length > 0) {
+      console.error(`Power K: two commands claim the same shortcut, the last one wins — ${clashes.join("; ")}`);
+    }
   });
 
   // ============================================================================

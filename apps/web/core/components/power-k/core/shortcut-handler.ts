@@ -11,6 +11,8 @@ import type { TPowerKCommandConfig, TPowerKContext } from "./types";
  * Formats a keyboard event into a modifier shortcut string
  * e.g., "cmd+k", "cmd+shift+,", "cmd+delete"
  */
+const SHIFTED_KEYS: Record<string, string> = { "?": "/" };
+
 export function formatModifierShortcut(e: KeyboardEvent): string {
   const parts: string[] = [];
 
@@ -19,7 +21,7 @@ export function formatModifierShortcut(e: KeyboardEvent): string {
   if (e.shiftKey) parts.push("shift");
 
   const key = e.key.toLowerCase();
-  parts.push(key === " " ? "space" : key);
+  parts.push(SHIFTED_KEYS[key] ?? (key === " " ? "space" : key));
 
   return parts.join("+");
 }

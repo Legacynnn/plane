@@ -8,6 +8,7 @@
 import { observer } from "mobx-react";
 import { useParams, usePathname } from "next/navigation";
 import { TickOutline } from "@makeplane/propel/icons";
+import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
 import { useTranslation } from "@plane/i18n";
 import { ContextMenu } from "@plane/propel/context-menu";
 import { cn } from "@plane/utils";
@@ -15,16 +16,13 @@ import { cn } from "@plane/utils";
 import { AppSidebarItem } from "@/components/sidebar/sidebar-item";
 // hooks
 import { useAppRailPreferences } from "@/hooks/use-navigation-preferences";
-import { getActiveModule, useAppRailVisibility } from "@/lib/app-rail";
+import { useUserPermissions } from "@/hooks/store/user";
+import { getActiveModule, getModuleRootHref, useAppRailVisibility } from "@/lib/app-rail";
 import type { TAppModule } from "@/lib/app-rail";
 // local imports
 import { MODULE_ICONS } from "./module-icons";
 
-const MODULE_PATHS: { module: Exclude<TAppModule, "settings">; path: string }[] = [
-  { module: "work", path: "" },
-  { module: "wiki", path: "wiki" },
-  { module: "ia", path: "ia" },
-];
+const RAIL_MODULES: Exclude<TAppModule, "settings">[] = ["work", "wiki", "ia"];
 const SettingsIcon = MODULE_ICONS.settings;
 
 export const AppRailRoot = observer(() => {
@@ -35,18 +33,23 @@ export const AppRailRoot = observer(() => {
   // preferences
   const { preferences, updateDisplayMode } = useAppRailPreferences();
   const { isCollapsed, toggleAppRail } = useAppRailVisibility();
+  const { allowPermissions } = useUserPermissions();
   // derived values
-  const activeModule = getActiveModule(pathname, workspaceSlug?.toString() ?? "");
+  const slug = workspaceSlug?.toString() ?? "";
+  const activeModule = getActiveModule(pathname, slug);
+  const canOpenWorkspaceSettings = allowPermissions(
+    [EUserPermissions.ADMIN, EUserPermissions.MEMBER],
+    EUserPermissionsLevel.WORKSPACE,
+    slug
+  );
+  const settingsHref = canOpenWorkspaceSettings ? `/${slug}/settings` : `/${slug}/settings/account/general`;
   const showLabel = preferences.displayMode === "icon_with_label";
   const railWidth = showLabel ? "3.75rem" : "3rem";
 
   return (
     <div
       className="z-[26] h-full flex-shrink-0 bg-canvas transition-[width] duration-200 ease-out"
-      style={{
-        width: railWidth,
-        display: "block",
-      }}
+      style={{ width: railWidth }}
     >
       <ContextMenu>
         <ContextMenu.Trigger className="h-full">
@@ -57,7 +60,7 @@ export const AppRailRoot = observer(() => {
                 "gap-3": !showLabel,
               })}
             >
-              {MODULE_PATHS.map(({ module, path }) => {
+              {RAIL_MODULES.map((module) => {
                 const Icon = MODULE_ICONS[module];
                 return (
                   <AppSidebarItem
@@ -65,7 +68,7 @@ export const AppRailRoot = observer(() => {
                     item={{
                       label: t(`app_rail.${module}`),
                       icon: <Icon className="size-5" />,
-                      href: `/${workspaceSlug}/${path}`,
+                      href: getModuleRootHref(slug, module),
                       isActive: activeModule === module,
                       showLabel,
                     }}
@@ -77,7 +80,7 @@ export const AppRailRoot = observer(() => {
                 item={{
                   label: t("app_rail.settings"),
                   icon: <SettingsIcon className="size-5" />,
-                  href: `/${workspaceSlug}/settings`,
+                  href: settingsHref,
                   isActive: activeModule === "settings",
                   showLabel,
                 }}

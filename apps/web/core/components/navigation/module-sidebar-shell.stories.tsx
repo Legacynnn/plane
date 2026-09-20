@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { runInAction } from "mobx";
 import type { TStoreSetup } from "../../../.storybook/decorators";
 import { IaSidebar } from "@/components/ia/sidebar/root";
-import { WIKI_COLLECTIONS } from "@/components/wiki/sidebar/fixtures";
+import { WIKI_COLLECTIONS } from "../../../.storybook/fixtures";
 import { WikiSidebar } from "@/components/wiki/sidebar/root";
 import { ModuleSidebarShell } from "./module-sidebar-shell";
 

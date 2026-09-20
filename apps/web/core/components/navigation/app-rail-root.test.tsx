@@ -6,25 +6,42 @@
 
 import { describe, expect, it } from "vitest";
 import { render, screen, within } from "@testing-library/react";
+import { runInAction } from "mobx";
 import { MemoryRouter, Route, Routes } from "react-router";
+import { EUserPermissions } from "@plane/types";
+import type { IWorkspaceMemberMe } from "@plane/types";
+import { StoreContext } from "@/lib/store-context";
 import { AppRailVisibilityProvider } from "@/lib/app-rail";
+import { RootStore } from "@/store/root.store";
 import { AppRailRoot } from "./app-rail-root";
 
-const renderRail = (pathname: string) =>
-  render(
-    <MemoryRouter initialEntries={[pathname]}>
-      <Routes>
-        <Route
-          path=":workspaceSlug/*"
-          element={
-            <AppRailVisibilityProvider isEnabled>
-              <AppRailRoot />
-            </AppRailVisibilityProvider>
-          }
-        />
-      </Routes>
-    </MemoryRouter>
+const seedStore = (role: EUserPermissions) => {
+  const store = new RootStore();
+  runInAction(() => {
+    store.user.permission.workspaceUserInfo.acme = { role } as IWorkspaceMemberMe;
+  });
+  return store;
+};
+
+const renderRail = (pathname: string, role: EUserPermissions = EUserPermissions.ADMIN) => {
+  const store = seedStore(role);
+  return render(
+    <StoreContext.Provider value={store}>
+      <MemoryRouter initialEntries={[pathname]}>
+        <Routes>
+          <Route
+            path=":workspaceSlug/*"
+            element={
+              <AppRailVisibilityProvider isEnabled>
+                <AppRailRoot />
+              </AppRailVisibilityProvider>
+            }
+          />
+        </Routes>
+      </MemoryRouter>
+    </StoreContext.Provider>
   );
+};
 
 const railLinks = () => within(screen.getByRole("navigation", { name: "Modules" })).getAllByRole("link");
 
@@ -73,5 +90,16 @@ describe("AppRailRoot", () => {
 
     expect(railLinks().map((link) => link.textContent)).toEqual(["", "", "", ""]);
     expect(railLinks().map((link) => link.getAttribute("aria-label"))).toEqual(["Work", "Wiki", "IA", "Settings"]);
+  });
+
+  it("sends a guest to account settings, which they can open", () => {
+    renderRail("/acme/", EUserPermissions.GUEST);
+
+    expect(railLinks().map((link) => link.getAttribute("href"))).toEqual([
+      "/acme/",
+      "/acme/wiki/",
+      "/acme/ia/",
+      "/acme/settings/account/general/",
+    ]);
   });
 });

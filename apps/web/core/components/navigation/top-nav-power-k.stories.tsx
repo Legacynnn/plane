@@ -7,16 +7,30 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { observer } from "mobx-react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { usePowerKMiscellaneousCommands } from "@/components/power-k/config/miscellaneous-commands";
+import { useProjectsAppPowerKCommands } from "@/components/power-k/config/commands";
 import type { TPowerKContext } from "@/components/power-k/core/types";
 import { GlobalShortcutsProvider } from "@/components/power-k/global-shortcuts";
+import { useAppRouter } from "@/hooks/use-app-router";
 import { TopNavPowerK } from "./top-nav-power-k";
 
 const ShortcutHarness = observer(function ShortcutHarness({ children }: { children: React.ReactNode }) {
-  const commands = usePowerKMiscellaneousCommands();
+  const commands = useProjectsAppPowerKCommands();
+  const router = useAppRouter();
+  const context = {
+    currentUserId: undefined,
+    activeCommand: null,
+    activeContext: null,
+    shouldShowContextBasedActions: false,
+    setShouldShowContextBasedActions: () => {},
+    params: { workspaceSlug: "acme", projectId: undefined },
+    router,
+    closePalette: () => {},
+    setActiveCommand: () => {},
+    setActivePage: () => {},
+  } as unknown as TPowerKContext;
   return (
     <>
-      <GlobalShortcutsProvider context={{} as TPowerKContext} commands={commands} />
+      <GlobalShortcutsProvider context={context} commands={commands} />
       {children}
     </>
   );

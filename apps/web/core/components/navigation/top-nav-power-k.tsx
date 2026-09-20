@@ -152,8 +152,7 @@ export const TopNavPowerK = observer(() => {
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      // Cmd/Ctrl+K or Cmd/Ctrl+/ closes the search dropdown
-      if ((e.metaKey || e.ctrlKey) && (e.key.toLowerCase() === "k" || e.key === "/")) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         closePanel();
         return;

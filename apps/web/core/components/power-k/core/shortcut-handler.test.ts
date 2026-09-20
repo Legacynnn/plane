@@ -6,7 +6,7 @@
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { IPowerKCommandRegistry } from "./registry";
-import { ShortcutHandler } from "./shortcut-handler";
+import { ShortcutHandler, formatModifierShortcut } from "./shortcut-handler";
 import type { TPowerKCommandConfig, TPowerKContext } from "./types";
 
 const makeCommand = (overrides: Partial<TPowerKCommandConfig>): TPowerKCommandConfig =>
@@ -71,5 +71,17 @@ describe("ShortcutHandler modifier shortcuts", () => {
     const event = keydown(input);
     makeHandler(command).handleKeyDown(event);
     expect(event.defaultPrevented).toBe(true);
+  });
+});
+
+describe("formatModifierShortcut", () => {
+  it("reads a plain modifier chord", () => {
+    expect(formatModifierShortcut(new KeyboardEvent("keydown", { key: "/", metaKey: true }))).toBe("cmd+/");
+  });
+
+  it("reads shift+slash as cmd+shift+/ whatever the layout prints", () => {
+    expect(formatModifierShortcut(new KeyboardEvent("keydown", { key: "?", metaKey: true, shiftKey: true }))).toBe(
+      "cmd+shift+/"
+    );
   });
 });

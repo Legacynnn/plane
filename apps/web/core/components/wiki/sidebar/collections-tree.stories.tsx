@@ -6,7 +6,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { WikiCollectionsTree } from "./collections-tree";
-import { WIKI_COLLECTIONS } from "./fixtures";
+import { WIKI_COLLECTIONS } from "../../../../.storybook/fixtures";
 
 const meta: Meta<typeof WikiCollectionsTree> = {
   title: "Wiki sidebar/WikiCollectionsTree",

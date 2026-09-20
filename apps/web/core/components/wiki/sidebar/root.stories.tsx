@@ -5,7 +5,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { WIKI_COLLECTIONS } from "./fixtures";
+import { WIKI_COLLECTIONS } from "../../../../.storybook/fixtures";
 import { WikiSidebar } from "./root";
 
 const meta: Meta<typeof WikiSidebar> = {
