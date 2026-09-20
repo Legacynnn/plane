@@ -69,6 +69,17 @@ class TestAIProvider:
         provider.delete()
         AIProvider.objects.create(slug="openai", name="OpenAI again", kind=AIProvider.Kind.LLM)
 
+    def test_a_key_that_cannot_be_encrypted_is_refused(self, provider, monkeypatch):
+        monkeypatch.setattr("plane.db.models.ai_catalog.encrypt_data", lambda value: "")
+        with pytest.raises(ValueError):
+            provider.set_api_key("sk-secret")
+        assert provider.has_api_key is False
+
+    def test_clearing_the_key(self, provider):
+        provider.set_api_key("sk-secret")
+        provider.set_api_key("")
+        assert provider.has_api_key is False
+
     def test_kinds(self):
         assert set(AIProvider.Kind.values) == {"llm", "decision", "search", "embedding"}
 
@@ -89,6 +100,19 @@ class TestAIModel:
     def test_same_key_allowed_on_another_provider(self, model):
         other = AIProvider.objects.create(slug="openrouter", name="OpenRouter", kind=AIProvider.Kind.LLM)
         AIModel.objects.create(provider=other, key="gpt-4o-mini", name="GPT-4o mini")
+
+    def test_usable_only_when_active_on_an_enabled_provider(self, model, provider):
+        assert model.is_usable is False
+
+        model.status = AIModel.Status.ACTIVE
+        assert model.is_usable is True
+
+        provider.enabled = False
+        assert model.is_usable is False
+
+        provider.enabled = True
+        model.deleted_at = timezone.now()
+        assert model.is_usable is False
 
     def test_statuses_and_sources(self):
         assert set(AIModel.Status.values) == {"pending", "active", "deprecated", "disabled"}
@@ -123,6 +147,39 @@ class TestModelPrice:
         assert ModelPrice.effective_at(model, now) == second
         assert ModelPrice.effective_at(model, now + timedelta(days=5)) == second
         assert ModelPrice.effective_at(model, now - timedelta(days=30)) is None
+
+    def test_price_cannot_be_edited_through_a_queryset(self, model):
+        price = ModelPrice.start(model, input_per_mtok=Decimal("0.15"))
+        with pytest.raises(ValidationError):
+            ModelPrice.objects.filter(pk=price.pk).update(input_per_mtok=Decimal("0.10"))
+        price.input_per_mtok = Decimal("0.10")
+        with pytest.raises(ValidationError), transaction.atomic():
+            ModelPrice.objects.bulk_update([price], ["input_per_mtok"])
+        assert ModelPrice.objects.get(pk=price.pk).input_per_mtok == Decimal("0.15")
+
+    def test_a_price_can_still_be_soft_deleted(self, model):
+        price = ModelPrice.start(model, input_per_mtok=Decimal("0.15"))
+        ModelPrice.objects.filter(pk=price.pk).delete()
+        assert ModelPrice.objects.filter(pk=price.pk).exists() is False
+
+    def test_a_price_records_where_it_came_from(self, model):
+        now = timezone.now()
+        synced = ModelPrice.start(
+            model,
+            effective_from=now - timedelta(days=1),
+            source=ModelPrice.Source.MODELS_DEV,
+            input_per_mtok=Decimal("0.15"),
+        )
+        override = ModelPrice.start(model, effective_from=now, input_per_mtok=Decimal("0.20"))
+
+        assert synced.source == "models.dev"
+        assert override.source == ModelPrice.Source.MANUAL
+        assert override.is_override is True
+        assert synced.is_override is False
+
+        override.source = ModelPrice.Source.LITELLM
+        with pytest.raises(ValidationError):
+            override.save()
 
     def test_a_price_cannot_start_before_the_current_one(self, model):
         now = timezone.now()
@@ -167,6 +224,29 @@ class TestModelAssignment:
         assert ModelAssignment.resolve("assist", workspace=acme, agent_id=agent_id) == agent
         assert ModelAssignment.resolve("assist", workspace=acme, agent_id=uuid4()) == workspace
 
+    def test_an_agent_assignment_stays_inside_its_workspace(self, model, acme, create_user):
+        other = Workspace.objects.create(name="Other", slug="other", id=uuid4(), owner=create_user)
+        agent_id = uuid4()
+        ModelAssignment.objects.create(
+            scope=ModelAssignment.Scope.AGENT, workspace=acme, agent_id=agent_id, feature="assist", model=model
+        )
+        assert ModelAssignment.resolve("assist", workspace=other, agent_id=agent_id) is None
+        assert ModelAssignment.resolve("assist", agent_id=agent_id) is None
+
+    def test_pick_uses_the_fallback_when_the_model_is_not_usable(self, model, fallback_model):
+        assignment = ModelAssignment.objects.create(
+            scope=ModelAssignment.Scope.INSTANCE, feature="assist", model=model, fallback_model=fallback_model
+        )
+        assert assignment.pick() is None
+
+        fallback_model.status = AIModel.Status.ACTIVE
+        fallback_model.save()
+        assert ModelAssignment.resolve("assist").pick() == fallback_model
+
+        model.status = AIModel.Status.ACTIVE
+        model.save()
+        assert ModelAssignment.resolve("assist").pick() == model
+
     def test_resolution_is_per_feature(self, model):
         ModelAssignment.objects.create(scope=ModelAssignment.Scope.INSTANCE, feature="assist", model=model)
         assert ModelAssignment.resolve("aligner") is None
@@ -186,6 +266,10 @@ class TestModelAssignment:
         with pytest.raises(IntegrityError), transaction.atomic():
             ModelAssignment.objects.create(
                 scope=ModelAssignment.Scope.AGENT, workspace=acme, feature="assist", model=model
+            )
+        with pytest.raises(IntegrityError), transaction.atomic():
+            ModelAssignment.objects.create(
+                scope=ModelAssignment.Scope.AGENT, agent_id=uuid4(), feature="assist", model=model
             )
 
 

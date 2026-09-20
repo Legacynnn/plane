@@ -12,11 +12,18 @@ from django.db.models import Q
 from django.utils import timezone
 
 # Module imports
+from plane.db.mixins import SoftDeletionQuerySet
 from plane.license.utils.encryption import decrypt_data, encrypt_data
 
 from .base import BaseModel
 
 LIVE = Q(deleted_at__isnull=True)
+
+
+class CatalogSource(models.TextChoices):
+    MODELS_DEV = "models.dev", "models.dev"
+    LITELLM = "litellm", "LiteLLM"
+    MANUAL = "manual", "Manual"
 
 
 class AIProvider(BaseModel):
@@ -55,7 +62,10 @@ class AIProvider(BaseModel):
         return bool(self.api_key_encrypted)
 
     def set_api_key(self, value):
-        self.api_key_encrypted = encrypt_data(value)
+        encrypted = encrypt_data(value)
+        if value and not encrypted:
+            raise ValueError("The provider key could not be encrypted.")
+        self.api_key_encrypted = encrypted
 
 
 class AIModel(BaseModel):
@@ -65,10 +75,7 @@ class AIModel(BaseModel):
         DEPRECATED = "deprecated", "Deprecated"
         DISABLED = "disabled", "Disabled"
 
-    class Source(models.TextChoices):
-        MODELS_DEV = "models.dev", "models.dev"
-        LITELLM = "litellm", "LiteLLM"
-        MANUAL = "manual", "Manual"
+    Source = CatalogSource
 
     provider = models.ForeignKey(AIProvider, on_delete=models.CASCADE, related_name="models")
     key = models.CharField(max_length=255)
@@ -93,21 +100,48 @@ class AIModel(BaseModel):
     def __str__(self):
         return f"{self.provider.slug}/{self.key}"
 
+    @property
+    def is_usable(self):
+        return (
+            self.status == self.Status.ACTIVE
+            and self.deleted_at is None
+            and self.provider.enabled
+            and self.provider.deleted_at is None
+        )
+
+
+FROZEN_PRICE_FIELDS = (
+    "model_id",
+    "source",
+    "currency",
+    "input_per_mtok",
+    "cached_input_per_mtok",
+    "cache_write_per_mtok",
+    "output_per_mtok",
+    "reasoning_per_mtok",
+    "per_call",
+    "effective_from",
+)
+
+
+class ModelPriceQuerySet(SoftDeletionQuerySet):
+    def update(self, **kwargs):
+        frozen = sorted(set(kwargs) & {*FROZEN_PRICE_FIELDS, "model"})
+        if frozen:
+            raise ValidationError(f"A model price is never edited in place: {', '.join(frozen)}")
+        return super().update(**kwargs)
+
+
+class LiveModelPriceManager(models.Manager.from_queryset(ModelPriceQuerySet)):
+    def get_queryset(self):
+        return super().get_queryset().filter(deleted_at__isnull=True)
+
 
 class ModelPrice(BaseModel):
-    FROZEN_FIELDS = (
-        "model_id",
-        "currency",
-        "input_per_mtok",
-        "cached_input_per_mtok",
-        "cache_write_per_mtok",
-        "output_per_mtok",
-        "reasoning_per_mtok",
-        "per_call",
-        "effective_from",
-    )
+    Source = CatalogSource
 
     model = models.ForeignKey(AIModel, on_delete=models.CASCADE, related_name="prices")
+    source = models.CharField(max_length=16, choices=CatalogSource.choices, default=CatalogSource.MANUAL)
     currency = models.CharField(max_length=3, default="USD")
     input_per_mtok = models.DecimalField(max_digits=18, decimal_places=8, null=True, blank=True)
     cached_input_per_mtok = models.DecimalField(max_digits=18, decimal_places=8, null=True, blank=True)
@@ -117,6 +151,9 @@ class ModelPrice(BaseModel):
     per_call = models.DecimalField(max_digits=18, decimal_places=8, null=True, blank=True)
     effective_from = models.DateTimeField(default=timezone.now)
     effective_to = models.DateTimeField(null=True, blank=True)
+
+    objects = LiveModelPriceManager()
+    all_objects = ModelPriceQuerySet.as_manager()
 
     class Meta:
         verbose_name = "Model Price"
@@ -141,10 +178,14 @@ class ModelPrice(BaseModel):
     def save(self, *args, **kwargs):
         if not self._state.adding:
             stored = ModelPrice.all_objects.get(pk=self.pk)
-            changed = [field for field in self.FROZEN_FIELDS if getattr(stored, field) != getattr(self, field)]
+            changed = [field for field in FROZEN_PRICE_FIELDS if getattr(stored, field) != getattr(self, field)]
             if changed:
                 raise ValidationError(f"A model price is never edited in place: {', '.join(changed)}")
         super().save(*args, **kwargs)
+
+    @property
+    def is_override(self):
+        return self.source == CatalogSource.MANUAL
 
     @classmethod
     def start(cls, model, effective_from=None, **prices):
@@ -195,7 +236,7 @@ class ModelAssignment(BaseModel):
                 condition=(
                     Q(scope="instance", workspace__isnull=True, agent_id__isnull=True)
                     | Q(scope="workspace", workspace__isnull=False, agent_id__isnull=True)
-                    | Q(scope="agent", agent_id__isnull=False)
+                    | Q(scope="agent", workspace__isnull=False, agent_id__isnull=False)
                 ),
                 name="ai_model_assignment_scope_matches_target",
             ),
@@ -223,7 +264,9 @@ class ModelAssignment(BaseModel):
     def resolve(cls, feature, workspace=None, agent_id=None):
         assignments = cls.objects.filter(feature=feature).select_related("model", "fallback_model")
         candidates = [
-            assignments.filter(scope=cls.Scope.AGENT, agent_id=agent_id) if agent_id else None,
+            assignments.filter(scope=cls.Scope.AGENT, workspace=workspace, agent_id=agent_id)
+            if agent_id and workspace
+            else None,
             assignments.filter(scope=cls.Scope.WORKSPACE, workspace=workspace) if workspace else None,
             assignments.filter(scope=cls.Scope.INSTANCE),
         ]
@@ -231,6 +274,12 @@ class ModelAssignment(BaseModel):
             match = candidate.first() if candidate is not None else None
             if match:
                 return match
+        return None
+
+    def pick(self):
+        for candidate in (self.model, self.fallback_model):
+            if candidate and candidate.is_usable:
+                return candidate
         return None
 
 
