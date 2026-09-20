@@ -97,3 +97,24 @@ def test_runs_once(configured, catalog):
     assert adopt_instance_llm_configuration() is True
     assert adopt_instance_llm_configuration() is False
     assert ModelAssignment.objects.count() == 1
+
+
+def test_overwrite_replaces_the_key_and_repoints_the_assignment(configured, catalog):
+    catalog.set_api_key("sk-old")
+    catalog.save()
+    old = AIModel.objects.create(provider=catalog, key="gpt-4o", name="GPT-4o", status=AIModel.Status.ACTIVE)
+    ModelAssignment.objects.create(feature=DEFAULT_FEATURE, scope=ModelAssignment.Scope.INSTANCE, model=old)
+    configured(LLM_API_KEY="sk-new", LLM_PROVIDER="openai", LLM_MODEL="gpt-4o-mini")
+
+    assert adopt_instance_llm_configuration(overwrite=True) is True
+
+    catalog.refresh_from_db()
+    assert catalog.api_key == "sk-new"
+    assert ModelAssignment.objects.get(feature=DEFAULT_FEATURE).model.key == "gpt-4o-mini"
+
+
+def test_overwrite_with_nothing_new_changes_nothing(configured, catalog):
+    configured(LLM_API_KEY="sk-instance", LLM_PROVIDER="openai", LLM_MODEL="gpt-4o-mini")
+    adopt_instance_llm_configuration()
+
+    assert adopt_instance_llm_configuration(overwrite=True) is False

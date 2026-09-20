@@ -27,6 +27,7 @@ from plane.license.api.serializers import InstanceConfigurationSerializer
 from plane.license.utils.encryption import encrypt_data
 from plane.utils.cache import cache_response, invalidate_cache
 from plane.license.utils.instance_value import get_email_configuration
+from plane.ai.adoption import LLM_CONFIGURATION_KEYS, adopt_instance_llm_configuration
 
 
 class InstanceConfigurationEndpoint(BaseAPIView):
@@ -54,6 +55,9 @@ class InstanceConfigurationEndpoint(BaseAPIView):
             bulk_configurations.append(configuration)
 
         InstanceConfiguration.objects.bulk_update(bulk_configurations, ["value"], batch_size=100)
+
+        if LLM_CONFIGURATION_KEYS & set(request.data.keys()):
+            adopt_instance_llm_configuration(overwrite=True)
 
         serializer = InstanceConfigurationSerializer(configurations, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
