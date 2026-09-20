@@ -3,6 +3,7 @@
 # See the LICENSE file for details.
 
 import pytest
+from django.core.cache import cache
 from rest_framework.test import APIClient
 from pytest_django.fixtures import django_db_setup
 
@@ -60,6 +61,7 @@ def api_token(db, create_user):
 @pytest.fixture
 def api_key_client(api_client, api_token):
     """Return an API key authenticated client for external API testing"""
+    cache.delete(f"api_key:{api_token.token}")
     api_client.credentials(HTTP_X_API_KEY=api_token.token)
     return api_client
 
