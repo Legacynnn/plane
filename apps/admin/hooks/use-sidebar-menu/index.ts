@@ -6,15 +6,32 @@
 
 // local imports
 import { coreSidebarMenuLinks } from "./core";
-import type { TSidebarMenuItem } from "./types";
+import type { TSidebarMenuGroup } from "./types";
 
-export function useSidebarMenu(): TSidebarMenuItem[] {
+export function useSidebarMenu(): TSidebarMenuGroup[] {
   return [
-    coreSidebarMenuLinks.general,
-    coreSidebarMenuLinks.email,
-    coreSidebarMenuLinks.authentication,
-    coreSidebarMenuLinks.workspace,
-    coreSidebarMenuLinks.ai,
-    coreSidebarMenuLinks.image,
+    {
+      key: "instance",
+      name: "Instance",
+      items: [
+        coreSidebarMenuLinks.general,
+        coreSidebarMenuLinks.email,
+        coreSidebarMenuLinks.authentication,
+        coreSidebarMenuLinks.workspace,
+        coreSidebarMenuLinks.image,
+      ],
+    },
+    {
+      key: "ai",
+      name: "AI",
+      items: [
+        coreSidebarMenuLinks.providers,
+        coreSidebarMenuLinks["model-catalog"],
+        coreSidebarMenuLinks.pricing,
+        coreSidebarMenuLinks.usage,
+        coreSidebarMenuLinks.evals,
+        coreSidebarMenuLinks["feature-flags"],
+      ],
+    },
   ];
 }
