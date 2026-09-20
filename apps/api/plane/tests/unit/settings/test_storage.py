@@ -204,3 +204,39 @@ class TestS3StorageSignedURLExpiration:
         mock_s3_client.generate_presigned_url.assert_called_once()
         call_kwargs = mock_s3_client.generate_presigned_url.call_args[1]
         assert call_kwargs["ExpiresIn"] == 120
+
+
+@pytest.mark.unit
+class TestS3StorageMinioEndpoints:
+    @patch.dict(
+        os.environ,
+        {
+            "USE_MINIO": "1",
+            "AWS_S3_ENDPOINT_URL": "http://plane-minio:9000",
+            "MINIO_PUBLIC_ENDPOINT_URL": "http://localhost:9000",
+        },
+        clear=True,
+    )
+    @patch("plane.settings.storage.boto3")
+    def test_request_uses_public_endpoint(self, mock_boto3):
+        request = Mock(scheme="http")
+        request.get_host.return_value = "localhost:18000"
+
+        S3Storage(request=request)
+
+        assert mock_boto3.client.call_args.kwargs["endpoint_url"] == "http://localhost:9000"
+
+    @patch.dict(
+        os.environ,
+        {
+            "USE_MINIO": "1",
+            "AWS_S3_ENDPOINT_URL": "http://plane-minio:9000",
+            "MINIO_PUBLIC_ENDPOINT_URL": "http://localhost:9000",
+        },
+        clear=True,
+    )
+    @patch("plane.settings.storage.boto3")
+    def test_server_uses_internal_endpoint(self, mock_boto3):
+        S3Storage()
+
+        assert mock_boto3.client.call_args.kwargs["endpoint_url"] == "http://plane-minio:9000"
