@@ -124,6 +124,10 @@ A dated price for one model; a change never edits a price, it starts a new one, 
 **Model Assignment**:
 Which model (and fallback) serves a feature or agent at instance, workspace or agent level.
 
+**Markup**:
+The multiplier applied to provider cost when turning it into credits: one instance default, optionally overridden per provider. It is 1.0 on self-hosted instances.
+_Avoid_: Margin, fee
+
 **Usage Event**:
 The record of one metered call: who and what caused it, which model and price, provider-reported tokens or calls, cost and credits.
 _Avoid_: Log, charge

@@ -25,6 +25,9 @@ python manage.py register_instance "$MACHINE_SIGNATURE"
 # Load the configuration variable
 python manage.py configure_instance
 
+# Seed the AI catalog on first boot
+python manage.py seed_ai_catalog
+
 # Create the default bucket
 python manage.py create_bucket
 
