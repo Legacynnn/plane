@@ -8,6 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { StorybookConfig } from "@storybook/react-vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { compatDedupe, nextCompatAliases } from "../app/compat/next/aliases";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(dirname, "..");
@@ -29,12 +30,8 @@ const config: StorybookConfig = {
     define: { ...viteConfig.define, "process.env": {} },
     resolve: {
       ...viteConfig.resolve,
-      alias: {
-        ...viteConfig.resolve?.alias,
-        "next/link": path.resolve(root, "app/compat/next/link.tsx"),
-        "next/navigation": path.resolve(root, "app/compat/next/navigation.ts"),
-      },
-      dedupe: ["react", "react-dom"],
+      alias: { ...viteConfig.resolve?.alias, ...nextCompatAliases(root) },
+      dedupe: compatDedupe,
     },
   }),
 };
