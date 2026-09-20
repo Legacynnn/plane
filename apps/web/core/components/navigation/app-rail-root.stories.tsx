@@ -49,3 +49,5 @@ export const IconOnly: Story = {
 export const LongestLabels: Story = {
   parameters: { route: { path: "/acme/settings/" }, locale: "pt-BR" },
 };
+
+export const Dark: Story = { parameters: { route: { path: "/acme/wiki/" }, theme: "dark" } };

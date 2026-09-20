@@ -6,34 +6,28 @@
 
 import { useEffect, useState } from "react";
 import type { Decorator } from "@storybook/react-vite";
-import { MemoryRouter, Route, Routes } from "react-router";
-import { TranslationProvider } from "@plane/i18n";
-import { StoreContext } from "@/lib/store-context";
+import { MemoryRouter } from "react-router";
+import { StoreContext } from "@/providers/store-context";
 import { RootStore } from "@/store/root.store";
-import { seedWorkspace } from "./fixtures";
+import { seedInstance } from "./fixtures";
 
-type TRouteParameters = {
-  path?: string;
-  pattern?: string;
-};
+export const THEMES = ["light", "dark", "light-contrast", "dark-contrast"] as const;
+
+export type TStoreSetup = (store: RootStore) => void;
 
 export const withRouter: Decorator = (Story, { parameters }) => {
-  const { path = "/acme/", pattern = ":workspaceSlug/*" } = (parameters.route ?? {}) as TRouteParameters;
+  const path = (parameters.path as string | undefined) ?? "/general/";
   return (
     <MemoryRouter key={path} initialEntries={[path]}>
-      <Routes>
-        <Route path={pattern} element={<Story />} />
-      </Routes>
+      <Story />
     </MemoryRouter>
   );
 };
 
-export type TStoreSetup = (store: RootStore) => void;
-
 function MockStoreProvider({ setup, children }: { setup?: TStoreSetup; children: React.ReactNode }) {
   const [store] = useState(() => {
     const root = new RootStore();
-    seedWorkspace(root);
+    seedInstance(root);
     setup?.(root);
     return root;
   });
@@ -41,18 +35,10 @@ function MockStoreProvider({ setup, children }: { setup?: TStoreSetup; children:
 }
 
 export const withMockStore: Decorator = (Story, { parameters }) => (
-  <MockStoreProvider key={JSON.stringify(parameters.route)} setup={parameters.store as TStoreSetup | undefined}>
+  <MockStoreProvider key={parameters.path as string | undefined} setup={parameters.store as TStoreSetup | undefined}>
     <Story />
   </MockStoreProvider>
 );
-
-export const withTranslation: Decorator = (Story) => (
-  <TranslationProvider>
-    <Story />
-  </TranslationProvider>
-);
-
-export const THEMES = ["light", "dark", "light-contrast", "dark-contrast"] as const;
 
 function ThemeScope({ theme, children }: { theme: string; children: React.ReactNode }) {
   useEffect(() => {
