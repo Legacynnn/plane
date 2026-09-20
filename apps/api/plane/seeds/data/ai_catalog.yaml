@@ -1,0 +1,22 @@
+markup: "1.0"
+providers:
+  - slug: openai
+    name: OpenAI
+    kind: llm
+    models:
+      - key: gpt-4o-mini
+        name: GPT-4o mini
+  - slug: anthropic
+    name: Anthropic
+    kind: llm
+  - slug: gemini
+    name: Google Gemini
+    kind: llm
+  - slug: openrouter
+    name: OpenRouter
+    kind: llm
+    base_url: https://openrouter.ai/api/v1
+  - slug: jev
+    name: Jev
+    kind: decision
+    cloud_only: true
