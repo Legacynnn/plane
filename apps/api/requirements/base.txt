@@ -34,8 +34,8 @@ django-crum==0.7.9
 uvicorn==0.29.0
 # sockets
 channels==4.3.2
-# ai
-openai==1.63.2
+# ai gateway (pulls openai, anthropic and google-genai clients)
+pydantic-ai-slim[anthropic,google,openai,openrouter]==2.46.0
 # slack
 slack-sdk==3.27.1
 # apm

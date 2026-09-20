@@ -115,6 +115,13 @@ An auto-generated outline of a repository (packages, apps, languages, entrypoint
 **Provider**:
 An external service we pay for AI work: language models, Jev decisions, web search, embeddings.
 
+**Gateway**:
+The in-process path every model call takes: it resolves the Model Assignment, builds the provider adapter, runs the call and reports what the provider charged for it.
+_Avoid_: Proxy (we call providers directly, see ADR 0003)
+
+**Feature**:
+The named piece of product a model call serves (editor assist, triage, a specialist agent). A Model Assignment is made per feature.
+
 **Model Catalog**:
 The instance's list of providers and models with their capabilities and status (pending, active, deprecated, disabled), kept current by a daily sync and managed in God Mode.
 
