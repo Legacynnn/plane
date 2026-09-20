@@ -75,6 +75,7 @@ export type TPowerKCommandConfig = {
   shortcut?: string; // Single key: "c", "p", "s"
   keySequence?: string; // Sequence: "gm", "op", "oc"
   modifierShortcut?: string; // With modifiers: "cmd+k", "cmd+delete", "cmd+shift+,"
+  allowWhileTyping?: boolean; // Fires even when focus sits in an input or editor
 
   // Visibility & Context
   closeOnSelect: boolean; // Whether to close the palette after selection

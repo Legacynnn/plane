@@ -79,6 +79,14 @@ The IA inbox where people answer agents: pending Confirmations first, then Sugge
 
 ## Wiki sources
 
+**Page**:
+A Wiki document authored by a person or an agent; pages nest under one another.
+_Avoid_: Doc, article, note
+
+**Collection**:
+A named top-level grouping of Wiki pages, the root of one tree in the Wiki sidebar.
+_Avoid_: Folder, space, category
+
 **Connector**:
 A workspace's authorised link to an external service (Slack, GitHub, GitLab, later email and meeting tools), managed in Settings.
 _Avoid_: Integration, connection

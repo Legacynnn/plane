@@ -40,6 +40,8 @@ interface AppSidebarLinkItemProps {
   href?: string;
   children: React.ReactNode;
   className?: string;
+  isActive?: boolean;
+  ariaLabel?: string;
 }
 
 interface AppSidebarButtonItemProps {
@@ -54,11 +56,12 @@ interface AppSidebarButtonItemProps {
 // ============================================================================
 
 const styles = {
-  base: "group flex flex-col gap-0.5 items-center justify-center text-tertiary",
-  icon: "flex items-center justify-center gap-2 size-8 rounded-md text-tertiary",
+  base: "group flex flex-col gap-0.5 items-center justify-center text-tertiary transition-[scale] duration-150 ease-out active:scale-[0.96] motion-reduce:active:scale-100",
+  icon: "flex items-center justify-center gap-2 size-8 rounded-md text-tertiary transition-[color,background-color] duration-150 ease-out",
   iconActive: "bg-layer-transparent-selected text-secondary !text-icon-primary",
   iconInactive: "group-hover:text-icon-secondary group-hover:bg-layer-transparent-hover !text-icon-tertiary",
-  label: "text-11 font-medium",
+  label:
+    "-mx-1.5 line-clamp-2 max-w-[calc(100%+0.75rem)] text-center text-11 leading-tight font-medium [overflow-wrap:anywhere] hyphens-auto transition-[color] duration-150 ease-out",
   labelActive: "text-secondary",
   labelInactive: "group-hover:text-secondary text-tertiary",
 } as const;
@@ -97,11 +100,16 @@ function AppSidebarItemIcon({ icon, highlight }: AppSidebarItemIconProps) {
   );
 }
 
-function AppSidebarLinkItem({ href, children, className }: AppSidebarLinkItemProps) {
+function AppSidebarLinkItem({ href, children, className, isActive, ariaLabel }: AppSidebarLinkItemProps) {
   if (!href) return null;
 
   return (
-    <Link href={href} className={cn(styles.base, className)}>
+    <Link
+      href={href}
+      className={cn(styles.base, className)}
+      aria-current={isActive ? "page" : undefined}
+      aria-label={ariaLabel}
+    >
       {children}
     </Link>
   );
@@ -139,7 +147,11 @@ function AppSidebarItem({ variant = "link", item }: AppSidebarItemProps) {
   );
 
   if (variant === "link") {
-    return <AppSidebarLinkItem href={href}>{commonItems}</AppSidebarLinkItem>;
+    return (
+      <AppSidebarLinkItem href={href} isActive={isActive} ariaLabel={showLabel ? undefined : label}>
+        {commonItems}
+      </AppSidebarLinkItem>
+    );
   }
 
   return (

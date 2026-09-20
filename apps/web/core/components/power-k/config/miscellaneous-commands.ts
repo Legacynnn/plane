@@ -19,19 +19,19 @@ import { usePowerK } from "@/hooks/store/use-power-k";
 export const usePowerKMiscellaneousCommands = (): TPowerKCommandConfig[] => {
   // store hooks
   const { toggleSidebar } = useAppTheme();
-  const { topNavInputRef, topNavSearchInputRef } = usePowerK();
+  const { topNavInputRef, topNavSearchInputRef, topNavSearchControlsRef } = usePowerK();
   // translation
   const { t } = useTranslation();
 
   const copyCurrentPageUrlToClipboard = useCallback(() => {
     const url = new URL(window.location.href);
     copyTextToClipboard(url.href)
-      .then(() => {
+      .then(() =>
         setToast({
           type: TOAST_TYPE.SUCCESS,
           title: t("power_k.miscellaneous_actions.copy_current_page_url_toast_success"),
-        });
-      })
+        })
+      )
       .catch(() => {
         setToast({
           type: TOAST_TYPE.ERROR,
@@ -49,6 +49,17 @@ export const usePowerKMiscellaneousCommands = (): TPowerKCommandConfig[] => {
       topNavInputRef.current.focus();
     }
   }, [topNavInputRef, topNavSearchInputRef]);
+
+  const toggleTopNavSearch = useCallback(() => {
+    const controls = topNavSearchControlsRef?.current;
+    if (!controls) return;
+    if (controls.isOpen) {
+      controls.close();
+      return;
+    }
+    controls.open();
+    topNavInputRef?.current?.focus();
+  }, [topNavSearchControlsRef, topNavInputRef]);
 
   return [
     {
@@ -83,6 +94,19 @@ export const usePowerKMiscellaneousCommands = (): TPowerKCommandConfig[] => {
       icon: SearchOutline,
       action: focusTopNavSearch,
       modifierShortcut: "cmd+f",
+      isEnabled: () => true,
+      isVisible: () => true,
+      closeOnSelect: true,
+    },
+    {
+      id: "toggle_top_nav_search",
+      group: "miscellaneous",
+      type: "action",
+      i18n_title: "power_k.miscellaneous_actions.toggle_top_nav_search",
+      icon: SearchOutline,
+      action: toggleTopNavSearch,
+      modifierShortcut: "cmd+/",
+      allowWhileTyping: true,
       isEnabled: () => true,
       isVisible: () => true,
       closeOnSelect: true,

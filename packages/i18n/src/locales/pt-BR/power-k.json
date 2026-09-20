@@ -116,7 +116,8 @@
       "copy_current_page_url": "Copiar URL da página atual",
       "copy_current_page_url_toast_success": "URL da página atual copiada para a área de transferência.",
       "copy_current_page_url_toast_error": "Ocorreu um erro ao copiar a URL da página atual para a área de transferência.",
-      "focus_top_nav_search": "Focar campo de busca"
+      "focus_top_nav_search": "Focar campo de busca",
+      "toggle_top_nav_search": "Alternar busca"
     },
     "preferences_actions": {
       "update_theme": "Alterar tema da interface",

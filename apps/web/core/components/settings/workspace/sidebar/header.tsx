@@ -4,22 +4,17 @@
  * See the LICENSE file for details.
  */
 
-import { ArrowNarrowLeftOutline } from "@makeplane/propel/icons";
 import { observer } from "mobx-react";
 // plane imports
 import { ROLE_DETAILS } from "@plane/constants";
 import { useTranslation } from "@plane/i18n";
-import { IconButton } from "@plane/propel/icon-button";
 // components
 import { WorkspaceLogo } from "@/components/workspace/logo";
 // hooks
 import { useUserPermissions } from "@/hooks/store/user";
-import { useAppRouter } from "@/hooks/use-app-router";
 import { useWorkspace } from "@/hooks/store/use-workspace";
 
 export const WorkspaceSettingsSidebarHeader = observer(function WorkspaceSettingsSidebarHeader() {
-  // router
-  const router = useAppRouter();
   // store hooks
   const { getWorkspaceRoleByWorkspaceSlug } = useUserPermissions();
   const { currentWorkspace } = useWorkspace();
@@ -34,14 +29,8 @@ export const WorkspaceSettingsSidebarHeader = observer(function WorkspaceSetting
 
   return (
     <div className="shrink-0">
-      <div className="flex items-center gap-1 py-3 pr-5 pl-4 text-body-md-medium">
-        <IconButton
-          variant="ghost"
-          size="base"
-          icon={ArrowNarrowLeftOutline}
-          onClick={() => router.push(`/${currentWorkspace?.slug}/`)}
-        />
-        <p>Workspace settings</p>
+      <div className="flex items-center gap-1 px-5 py-3 text-body-md-medium">
+        <p>{t("app_rail.settings")}</p>
       </div>
       <div className="mt-1.5 flex items-center justify-between gap-2 px-5 py-0.5">
         <div className="flex items-center gap-2 truncate">

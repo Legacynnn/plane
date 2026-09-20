@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from "react";
 import { observer } from "mobx-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { LogOutOutline, SettingsOutline } from "@makeplane/propel/icons";
 // plane imports
 import { Avatar } from "@makeplane/propel/components/avatar";
@@ -20,7 +20,6 @@ import { CoverImage } from "@/components/common/cover-image";
 import { AppSidebarItem } from "@/components/sidebar/sidebar-item";
 // hooks
 import { useAppTheme } from "@/hooks/store/use-app-theme";
-import { useCommandPalette } from "@/hooks/store/use-command-palette";
 import { useUser } from "@/hooks/store/user";
 
 export const UserMenuRoot = observer(function UserMenuRoot() {
@@ -28,11 +27,11 @@ export const UserMenuRoot = observer(function UserMenuRoot() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   // router
   const router = useRouter();
+  const { workspaceSlug } = useParams();
   // store hooks
   const { toggleAnySidebarDropdown } = useAppTheme();
   const { data: currentUser } = useUser();
   const { signOut } = useUser();
-  const { toggleProfileSettingsModal } = useCommandPalette();
   // derived values
   const isUserInstanceAdmin = false;
   // translation
@@ -109,24 +108,14 @@ export const UserMenuRoot = observer(function UserMenuRoot() {
       </div>
       <div>
         <CustomMenu.MenuItem
-          onClick={() =>
-            toggleProfileSettingsModal({
-              activeTab: "general",
-              isOpen: true,
-            })
-          }
+          onClick={() => router.push(`/${workspaceSlug}/settings/account/general`)}
           className="flex items-center gap-2"
         >
           <SettingsOutline className="size-3.5 shrink-0" />
           {t("settings")}
         </CustomMenu.MenuItem>
         <CustomMenu.MenuItem
-          onClick={() =>
-            toggleProfileSettingsModal({
-              activeTab: "preferences",
-              isOpen: true,
-            })
-          }
+          onClick={() => router.push(`/${workspaceSlug}/settings/account/preferences`)}
           className="flex items-center gap-2"
         >
           <SettingsOutline className="size-3.5 shrink-0" />

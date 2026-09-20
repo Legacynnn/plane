@@ -11,6 +11,8 @@ import type { TPowerKCommandConfig, TPowerKContext } from "./types";
  * Formats a keyboard event into a modifier shortcut string
  * e.g., "cmd+k", "cmd+shift+,", "cmd+delete"
  */
+const SHIFTED_KEYS: Record<string, string> = { "?": "/" };
+
 export function formatModifierShortcut(e: KeyboardEvent): string {
   const parts: string[] = [];
 
@@ -19,7 +21,7 @@ export function formatModifierShortcut(e: KeyboardEvent): string {
   if (e.shiftKey) parts.push("shift");
 
   const key = e.key.toLowerCase();
-  parts.push(key === " " ? "space" : key);
+  parts.push(SHIFTED_KEYS[key] ?? (key === " " ? "space" : key));
 
   return parts.join("+");
 }
@@ -81,14 +83,14 @@ export class ShortcutHandler {
       return;
     }
 
-    // Don't handle shortcuts when typing in inputs (except Cmd+K)
-    if (isTypingInInput(e.target)) {
-      return;
-    }
-
     // Handle modifier shortcuts (Cmd+Delete, Cmd+Shift+,, etc.)
     if (hasModifier) {
       this.handleModifierShortcut(e);
+      return;
+    }
+
+    // Don't handle single keys and sequences when typing in inputs
+    if (isTypingInInput(e.target)) {
       return;
     }
 
@@ -102,6 +104,8 @@ export class ShortcutHandler {
   private handleModifierShortcut(e: KeyboardEvent): void {
     const shortcut = formatModifierShortcut(e);
     const command = this.registry.findByModifierShortcut(this.getContext(), shortcut);
+
+    if (command && !command.allowWhileTyping && isTypingInInput(e.target)) return;
 
     if (command && this.canExecuteCommand(command)) {
       e.preventDefault();

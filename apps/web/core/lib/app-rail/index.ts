@@ -4,6 +4,8 @@
  * See the LICENSE file for details.
  */
 
+export * from "./active-module";
 export * from "./context";
+export * from "./module-nav";
 export * from "./provider";
 export * from "./types";
